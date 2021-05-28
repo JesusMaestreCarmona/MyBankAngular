@@ -1,0 +1,17 @@
+@import '../../../variables.scss';
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-chip {
+    background-color: white !important;
+}
+
+::ng-deep.mat-menu-panel {
+    max-width: none !important;
+}
+
+::ng-deep .mat-menu-content{
+    padding:0px !important;
+}

@@ -1,0 +1,61 @@
+<mat-toolbar color="primary" class="shadow-sm">
+  <mat-toolbar-row>
+    <button mat-button color="primary" (click)="navegarHaciaPrincipal()">
+      <div class="marca border-bottom-secondary d-flex align-items-center">
+        <mat-icon class="logo mr-1">account_balance</mat-icon>
+        <span class="color-secondary">MY BANK</span>
+      </div>
+    </button>
+
+    <span class="spacer"></span>
+
+    <mat-chip-list class="mr-2" *ngIf="cuentaActual != null && cuentasDelUsuario != undefined">
+      <mat-chip [matMenuTriggerFor]="menuSeleccionCuenta"  matTooltip="{{cuentasDelUsuario.length > 1 ? 'Click para cambiar de cuenta' : 'Solo tienes una cuenta disponible'}}">
+        <span class="d-none d-md-block">Saldo actual:</span>
+        <span class="{{cuentaActual.saldo > 0 ? 'color-success' : 'color-warn'}} mr-1 ml-2">{{cuentaActual.saldo | currency: cuentaActual.divisa.descripcion}}</span>
+        <mat-icon *ngIf="cuentasDelUsuario.length > 1">keyboard_arrow_down</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <mat-menu #menuSeleccionCuenta="matMenu" class="pt-0">
+      <h4 class="my-auto pl-3 py-2 color-primary shadow-sm">Menú de selección de cuenta</h4>
+      <div>
+        <button mat-menu-item *ngFor="let cuentaDelUsuario of cuentasDelUsuario" (click)="abrirDetalleCuenta(cuentaDelUsuario)">
+          <span>
+            <mat-icon class="color-primary">credit_card</mat-icon>
+            {{cuentaDelUsuario.iban}}
+          </span>
+          <span class="{{cuentaDelUsuario.saldo > 0 ? 'color-success' : 'color-warn'}} mr-1 ml-2">{{cuentaDelUsuario.saldo | currency: cuentaDelUsuario.divisa.descripcion}}</span>
+        </button>  
+      </div>
+    </mat-menu> 
+
+    <button *ngIf="usuarioAutenticado != null" mat-button [matMenuTriggerFor]="menuImagenUsuario" matTooltip="{{usuarioAutenticado.nombre + ' ' + usuarioAutenticado.apellido1 + ' ' + usuarioAutenticado.apellido2}}">
+      <app-imagen-usuario [imagen]="usuarioAutenticado.imagen" [width]="40" [height]="40"></app-imagen-usuario>
+    </button> 
+    <mat-menu #menuImagenUsuario="matMenu">
+      <button mat-menu-item (click)="navegarAHistorial()">
+        <mat-icon class="color-primary">history</mat-icon>
+        <span>Historial de transferencias</span>
+      </button>
+      <button mat-menu-item (click)="navegarARealizarTransferencia()">
+        <mat-icon class="color-primary">attach_money</mat-icon>
+        <span>Realizar / Solicitar transferencia</span>
+      </button>
+      <button mat-menu-item (click)="navegarAListadoPeticiones()">
+        <mat-icon *ngIf="totalPeticiones" matBadge="{{totalPeticiones}}" matBadgeColor="warn" matBadgeSize="small" class="color-primary">notifications_active</mat-icon>
+        <mat-icon *ngIf="!totalPeticiones" class="color-primary">notifications_none</mat-icon>
+        <span>Peticiones de transferencia</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="navegarAMiCuenta()">
+        <mat-icon class="color-accent">settings</mat-icon>
+        <span>Modificar datos usuario</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="dialogoAbandonarSesion()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Abandonar la sesión</span>
+      </button>
+    </mat-menu> 
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,67 @@
+<div class="row d-flex justify-content-center mt-5">
+
+  <div class="d-none d-md-block col-4 shadow-sm"> 
+    <mat-card class="h-100 d-flex align-items-center rounded-left bg-primary">
+      <div>
+        <mat-card-header class="d-flex justify-content-center">
+          <mat-card-title class="text-center mb-4 color-accent">¡Hola, Amigo!</mat-card-title>
+          <mat-card-subtitle class="text-justify text-white">Si no tienes cuenta, haz click en regístrate e introduce los datos requeridos para hacerte con una.</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions class="d-flex justify-content-center">
+          <button mat-raised-button color="accent" class="w-50 p-2 rounded-pill shadow-none" (click)="navegarARegistrarUsuario()">Regístrate</button>
+        </mat-card-actions>
+      </div>
+    </mat-card>
+  </div>
+  
+  <div class="col-12 col-md-6 shadow-sm">
+    <mat-card id="contenedor-login" class="p-5 d-flex justify-content-center align-items-center rounded-right">
+      <div>
+        <mat-card-header class="pb-2">
+          <mat-card-title class="color-primary">
+            <div class="marca border-bottom-primary d-flex align-items-center py-1 mb-4">
+              <mat-icon class="logo mr-1">account_balance</mat-icon>
+              <span>MY BANK</span>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="loginForm">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email">
+              <ng-container *ngIf="loginForm.controls.email.errors">
+                <div class="color-warn" *ngIf="loginForm.controls.email.errors.required"><small>Campo requerido</small></div>
+                <div class="color-warn" *ngIf="loginForm.controls.email.errors.pattern"><small>Dirección de correo no válida</small></div>
+              </ng-container>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" [type]="mostrarPassword ? 'password' : 'text'">
+              <ng-container *ngIf="loginForm.controls.password.errors">
+                <div class="color-warn" *ngIf="loginForm.controls.password.errors.required"><small>Campo requerido</small></div>
+              </ng-container>
+              <button mat-icon-button matSuffix (click)="mostrarPassword = !mostrarPassword">
+                <mat-icon>{{mostrarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions class="d-flex justify-content-center">
+          <div class="row w-100">
+            <div class="col-12 col-md-6 text-center d-flex">
+              <a href="#" class="my-auto w-100 mr-2 color-accent">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="col-12 col-md-6 my-3">
+              <button mat-raised-button color="primary" class="w-100 p-2 rounded-pill" [disabled]="loginForm.invalid" (click)="autenticarUsuario()">Entrar</button>
+            </div>
+            <div class="col-12 d-block d-md-none">
+              <button mat-raised-button color="accent" class="w-100 p-2 rounded-pill shadow-none" (click)="navegarARegistrarUsuario()">Regístrate</button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </div>
+    </mat-card>  
+  </div>
+  
+</div>

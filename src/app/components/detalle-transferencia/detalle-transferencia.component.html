@@ -1,0 +1,87 @@
+<mat-card class="p-0">  
+  <mat-card-header class="bg-secondary border-bottom-primary">
+    <mat-card-subtitle class="color-primary my-auto p-3">Detalle de la {{transferencia.estado ? 'transferencia' : 'petición'}}</mat-card-subtitle>
+    <button mat-icon-button color="primary" class="my-auto ml-auto mr-3" matTooltip="Cerrar detalle" (click)="cerrarDialogo()">
+      <mat-icon>close</mat-icon>
+    </button>      
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row d-flex align-items-center my-4">
+        <div class="col">
+        <div class="d-flex justify-content-end my-auto">
+          <!-- <app-imagen-usuario [imagen]="usuarioAutenticado.imagen" [width]="80" [height]="80"></app-imagen-usuario> -->
+          <app-imagen-usuario [imagen]="transferencia.cuenta_origen.titular.imagen" [width]="60" [height]="60"></app-imagen-usuario>
+        </div>
+      </div>
+      <div class="col d-flex align-items-center">
+        <!-- <mat-progress-bar *ngIf="transferencia.cuenta_origen.titular.id == usuarioAutenticado.id" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar *ngIf="transferencia.cuenta_destino.titular.id == usuarioAutenticado.id" mode="query"></mat-progress-bar> -->
+        <mat-progress-bar *ngIf="transferencia.estado" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar *ngIf="!transferencia.estado" mode="query"></mat-progress-bar>
+      </div>
+      <div class="col">
+        <div class="d-flex">
+          <!-- <div *ngIf="transferencia.cuenta_origen.titular.id == usuarioAutenticado.id; else elseBlock">
+            <app-imagen-usuario [imagen]="transferencia.cuenta_destino.titular.imagen" [width]="80" [height]="80"></app-imagen-usuario>
+          </div>
+          <ng-template #elseBlock>
+            <app-imagen-usuario [imagen]="transferencia.cuenta_origen.titular.imagen" [width]="80" [height]="80"></app-imagen-usuario>
+          </ng-template> -->
+          <app-imagen-usuario [imagen]="transferencia.cuenta_destino.titular.imagen" [width]="60" [height]="60"></app-imagen-usuario>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-flex align-items-center">
+      <div class="col">
+        <div class="row d-flex justify-content-center">
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Titular cuenta origen</mat-label>
+              <input matInput [value]="transferencia.cuenta_origen.titular.nombre + ' ' + transferencia.cuenta_origen.titular.apellido1 + ' ' + transferencia.cuenta_origen.titular.apellido2" class="text-center" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Titular cuenta destino</mat-label>
+              <input matInput [value]="transferencia.cuenta_destino.titular.nombre + ' ' + transferencia.cuenta_destino.titular.apellido1 + ' ' + transferencia.cuenta_destino.titular.apellido2" class="text-center" [readonly]="true">
+            </mat-form-field>    
+          </div>
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Iban cuenta origen</mat-label>
+              <input matInput [value]="transferencia.cuenta_origen.iban" class="text-center" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Iban cuenta destino</mat-label>
+              <input matInput [value]="transferencia.cuenta_destino.iban" class="text-center" [readonly]="true">
+            </mat-form-field>    
+          </div>
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Fecha</mat-label>
+              <input matInput [value]="transferencia.fecha | date:'dd/MM/yy HH:mm'" class="text-center" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-11 col-md-5 mx-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Importe</mat-label>
+              <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="transferencia.estado ? transferencia.cuenta_destino.divisa.descripcion : transferencia.cuenta_origen.divisa.descripcion" [value]="transferencia.importe" class="text-center color-success" [readonly]="true" />
+              <mat-hint *ngIf="!transferencia.estado && transferencia.cuenta_origen.divisa.id != transferencia.cuenta_destino.divisa.id" class="font-weight-bold">
+                En {{transferencia.cuenta_destino.divisa.descripcion}}: {{importeCambioMoneda}}
+              </mat-hint>
+            </mat-form-field>    
+          </div>
+          <div *ngIf="!transferencia.estado" class="col-11 col-md-5 mx-1 mt-2">
+            <button mat-raised-button color="primary" class="w-100" (click)="aceptarPeticion()">Aceptar petición</button>
+          </div>
+          <div *ngIf="!transferencia.estado" class="col-11 col-md-5 mx-1 my-2">
+            <button mat-raised-button color="warn" class="w-100" (click)="rechazarPeticion()">Rechazar petición</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

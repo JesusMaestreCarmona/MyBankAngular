@@ -1,0 +1,219 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Para personalizar los colores de Angular Material podemos utilizar uno de los 4 siguientes
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+//@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+//@import "~@angular/material/prebuilt-themes/purple-green.css";
+
+
+// O también podemos personalizar los estilos a través de los colores: primary, accent, warn...
+// Para elegir paletas gráficas recomiendo visitar http://mcg.mbitson.com y elegir
+// "Angular JS 2 (Material 2)" .  Más info en https://material.angular.io/guide/theming
+
+@import "~@angular/material/theming";
+
+@include mat-core();
+
+$md-mcgpalette0: (
+    50 : #e1e7ec,
+    100 : #b5c3d0,
+    200 : #839bb1,
+    300 : #517392,
+    400 : #2c557a,
+    500 : #073763,
+    600 : #06315b,
+    700 : #052a51,
+    800 : #042347,
+    900 : #021635,
+    A100 : #6d97ff,
+    A200 : #3a73ff,
+    A400 : #074fff,
+    A700 : #0044ec,
+    contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #ffffff,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #ffffff,
+      A400 : #ffffff,
+      A700 : #ffffff,
+    )
+);
+
+$md-mcgpalette1: (
+    50 : #eef5fb,
+    100 : #d4e5f5,
+    200 : #b7d4ee,
+    300 : #9ac2e7,
+    400 : #85b5e1,
+    500 : #6fa8dc,
+    600 : #67a0d8,
+    700 : #5c97d3,
+    800 : #528dce,
+    900 : #407dc5,
+    A100 : #ffffff,
+    A200 : #e3efff,
+    A400 : #b0d3ff,
+    A700 : #96c4ff,
+    contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #ffffff,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #ffffff,
+      A400 : #ffffff,
+      A700 : #ffffff,
+    )
+);
+
+$theming-material-components-primary: mat-palette($md-mcgpalette0);
+$theming-material-components-accent: mat-palette($md-mcgpalette1);
+$theming-material-components-warn: mat-palette($mat-red);
+$theming-material-components-info: mat-palette($mat-yellow);
+
+$theming-material-components-theme: mat-light-theme(
+  $theming-material-components-primary,
+  $theming-material-components-accent,
+  $theming-material-components-warn,
+);
+
+@include angular-material-theme($theming-material-components-theme);
+
+/* Estilos generales */
+
+@import 'variables.scss';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+body { 
+  margin: 0; 
+  font-family: Roboto, 
+  "Helvetica Neue", sans-serif;
+  background-color: $color-secondary;
+}
+
+.row {
+  margin: 0;
+}
+
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8
+.col-9, .col-10, .col-11, .col-12 {
+  padding: 0 !important;
+}
+
+a { 
+  text-decoration: none !important; 
+}
+
+#contenedor-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+#card-principal {
+  mat-card {
+    min-height: 100%;
+  }
+}
+
+.font-titulo {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.color-primary {
+  color: $color-primary !important;
+}
+
+.color-accent {
+  color: $color-accent !important;
+}
+
+.color-secondary {
+  color: $color-secondary !important;
+}
+
+.color-warn {
+  color: $color-warn !important;
+}
+
+.color-info {
+  color: $color-info !important;
+}
+
+.color-success {
+  color: $color-success !important;
+}
+
+.bg-primary {
+  background-color: $color-primary !important;
+}
+
+.bg-accent {
+  background-color: $color-accent !important;
+}
+
+.bg-secondary {
+  background-color: $color-secondary !important;
+}
+
+.border-bottom-primary {
+  border-bottom: 2px solid $color-primary;
+}
+
+.border-bottom-secondary {
+  border-bottom: 2px solid $color-secondary;
+}
+
+button:focus {
+  outline: none;
+}
+
+mat-card {
+  box-shadow: none !important;
+}
+
+.logo {
+  font-weight: bold;
+  color: $color-accent;
+}
+
+.logo-fijo-esquina {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.marca {
+  font-size: 25px;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+  border-top: 2px solid $color-accent;
+}
+
+@media only screen and (max-width: 768px) {
+
+  #card-principal {
+    margin: 0 !important;
+  }
+
+  .ocultar-columna {
+    display: none !important;
+  }
+
+}

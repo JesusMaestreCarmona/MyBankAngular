@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto my-5 shadow-sm rounded">
+    <mat-card>
+      <mat-card-header class="bg-secondary border-bottom-primary mb-4">
+        <mat-card-subtitle class="color-primary my-auto p-3">Formulario para modificación de datos de usuario</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="datosForm">
+          <div class="row d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center mb-4">
+              <button mat-button (click)="fileInput.click()"> 
+                <app-imagen-usuario *ngIf="usuarioAutenticado != null" [imagen]="usuarioAutenticado.imagen" [width]="100" [height]="100"></app-imagen-usuario>
+              </button>
+              <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre">
+                <ng-container *ngIf="datosForm.controls.nombre.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.nombre.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.nombre.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Primer apellido</mat-label>
+                <input matInput formControlName="apellido1">
+                <ng-container *ngIf="datosForm.controls.apellido1.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.apellido1.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.apellido1.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Segundo apellido</mat-label>
+                <input matInput formControlName="apellido2">
+                <ng-container *ngIf="datosForm.controls.apellido2.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.apellido2.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.apellido2.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Telefono</mat-label>
+                <input matInput formControlName="telefono">
+                <ng-container *ngIf="datosForm.controls.telefono.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.telefono.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.telefono.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="direccion">
+                <ng-container *ngIf="datosForm.controls.direccion.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.direccion.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Localidad</mat-label>
+                <input matInput formControlName="localidad">
+                <ng-container *ngIf="datosForm.controls.localidad.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.localidad.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Codigo postal</mat-label>
+                <input matInput formControlName="codigo_postal">
+                <ng-container *ngIf="datosForm.controls.codigo_postal.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-3 mx-1">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Estado</mat-label>
+                <input matInput formControlName="estado">
+                <ng-container *ngIf="datosForm.controls.estado.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>
+            </div>
+          </div>
+        </form>    
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button [disabled]="datosForm.invalid" (click)="actualizarDatosUsuario()" color="primary">Actualizar</button>
+        <button mat-raised-button color="accent" (click)="cargarDatosUsuarioEnFormulario()">Reiniciar</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
