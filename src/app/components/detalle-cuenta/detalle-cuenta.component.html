@@ -28,10 +28,16 @@
                 <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuenta.divisa.descripcion" [value]="cuenta.saldo" class="{{cuenta.saldo > 0 ? 'color-success' : 'color-warn'}} text-center" [readonly]="true" />
               </mat-form-field>
             </div>
+            <div class="col-5 col-md-2 mx-1" *ngIf="cuenta.divisa.id != cuentaForm.controls.divisa.value && saldoCambioMoneda != null">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Nuevo saldo</mat-label>
+                <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="nuevaDivisa[0]['descripcion']" [value]="saldoCambioMoneda" class="{{cuenta.saldo > 0 ? 'color-success' : 'color-warn'}} text-center" [readonly]="true" />
+              </mat-form-field>
+            </div>
             <div class="col-5 col-md-2 mx-1">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Divisa</mat-label>
-                <mat-select formControlName="divisa">
+                <mat-select formControlName="divisa" (selectionChange)="seleccionarDivisa()">
                   <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
                     {{divisa.descripcion}}
                   </mat-option>
@@ -42,7 +48,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Descripción</mat-label>
                 <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="cuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="cuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
-                <textarea rows="4" matInput formControlName="descripcion" class="text-justify">{{cuenta.descripcion}}</textarea>
+                <textarea matInput formControlName="descripcion" class="text-justify">{{cuenta.descripcion}}</textarea>
                 <ng-container *ngIf="cuentaForm.controls.descripcion.errors">
                   <div class="color-warn" *ngIf="cuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
                 </ng-container>

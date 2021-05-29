@@ -16,7 +16,7 @@
               </mat-card-header>
               <mat-card-content>
                 <form [formGroup]="solicitarDineroForm">
-                  <mat-form-field appearance="fill" class="w-100 mb-2">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Iban</mat-label>
                     <input matInput formControlName="iban">
                     <mat-hint>* Iban de la cuenta a la que quiera realizar la petición</mat-hint>
@@ -26,16 +26,16 @@
                       <div class="color-warn" *ngIf="solicitarDineroForm.controls.iban.errors.ibanEncontrado"><small>El iban introducido no existe</small></div>
                     </ng-container>
                   </mat-form-field>
-                  <mat-form-field appearance="fill" class="w-100">
+                  <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Descripción</mat-label>
                     <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="solicitarDineroForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="solicitarDineroForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
-                    <textarea rows="4" matInput formControlName="descripcion"></textarea>
+                    <textarea matInput formControlName="descripcion"></textarea>
                     <ng-container *ngIf="solicitarDineroForm.controls.descripcion.errors">
                       <div class="color-warn" *ngIf="solicitarDineroForm.controls.descripcion.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="solicitarDineroForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
                     </ng-container>
                   </mat-form-field>
-                  <mat-form-field appearance="fill" class="w-25">
+                  <mat-form-field appearance="outline" class="w-25">
                     <mat-label>Importe</mat-label>
                     <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuentaActual.divisa.descripcion" formControlName="importe" />
                     <ng-container *ngIf="solicitarDineroForm.controls.importe.errors">
@@ -67,7 +67,7 @@
               </mat-card-header>
               <mat-card-content>
                 <form [formGroup]="enviarDineroForm">
-                  <mat-form-field appearance="fill" class="w-100 mb-2">
+                  <mat-form-field appearance="outline" class="w-100 mb-2">
                     <mat-label>Iban</mat-label>
                     <input matInput formControlName="iban">
                     <mat-hint>* Iban de la cuenta a la que quiera enviar el importe</mat-hint>
@@ -77,16 +77,16 @@
                       <div class="color-warn" *ngIf="enviarDineroForm.controls.iban.errors.ibanEncontrado"><small>El iban introducido no existe</small></div>
                     </ng-container>
                   </mat-form-field>
-                  <mat-form-field appearance="fill" class="w-100">
+                  <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Descripción</mat-label>
                     <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="enviarDineroForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="enviarDineroForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
-                    <textarea rows="4" matInput formControlName="descripcion"></textarea>
+                    <textarea matInput formControlName="descripcion"></textarea>
                     <ng-container *ngIf="enviarDineroForm.controls.descripcion.errors">
                       <div class="color-warn" *ngIf="enviarDineroForm.controls.descripcion.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="enviarDineroForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
                     </ng-container>
                   </mat-form-field>
-                  <mat-form-field appearance="fill" class="w-25">
+                  <mat-form-field appearance="outline" class="w-25">
                     <mat-label>Importe</mat-label>
                     <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuentaActual.divisa.descripcion" formControlName="importe" />
                     <ng-container *ngIf="enviarDineroForm.controls.importe.errors">

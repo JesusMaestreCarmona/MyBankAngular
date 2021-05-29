@@ -5,6 +5,7 @@ import { Cuenta, Divisa } from 'src/app/interfaces/interfaces';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { DivisaService } from 'src/app/services/divisa.service';
+import { TransferenciaService } from 'src/app/services/transferencia.service';
 
 @Component({
   selector: 'app-detalle-cuenta',
@@ -16,13 +17,16 @@ export class DetalleCuentaComponent implements OnInit {
   idCuentaActual: number;
   cuentaForm: FormGroup;
   divisas: Divisa[];
+  saldoCambioMoneda: number;
+  nuevaDivisa: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public cuenta: Cuenta,
     private dialogRef: MatDialogRef<DetalleCuentaComponent>,
     private cuentaService: CuentaService,
     private divisaService: DivisaService,
-    private comunicacionDeAlertasService: ComunicacionDeAlertasService
+    private comunicacionDeAlertasService: ComunicacionDeAlertasService,
+    private transferenciaService: TransferenciaService
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +62,19 @@ export class DetalleCuentaComponent implements OnInit {
       this.comunicacionDeAlertasService.abrirDialogInfo(mensaje).subscribe(() => {
         this.dialogRef.close(); 
       });
+    });
+  }
+
+  seleccionarDivisa() {
+    this.nuevaDivisa = this.divisas.filter(divisa => divisa.id == this.cuentaForm.controls.divisa.value);
+    this.transferenciaService.getCambioMoneda(this.cuenta.divisa.descripcion, this.nuevaDivisa[0]['descripcion']).subscribe(data => {
+      if (data['result'] == 'ok') {
+        this.saldoCambioMoneda = parseFloat(data['cambioMoneda']) * this.cuenta.saldo;
+      }
+      else 
+        this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un problema al cambiar de divisa').subscribe(() => {
+          this.dialogRef.close();
+        });
     });
   }
 
