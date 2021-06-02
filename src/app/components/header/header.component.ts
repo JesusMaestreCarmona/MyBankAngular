@@ -9,6 +9,7 @@ import { DialogTypes } from '../dialogo-general/dialog-data-type';
 import { TransferenciaService } from 'src/app/services/transferencia.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DetalleCuentaComponent } from '../detalle-cuenta/detalle-cuenta.component';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,8 @@ export class HeaderComponent implements OnInit {
     private usuarioService: UsuarioService,
     private transferenciaService: TransferenciaService,
     private cuentaService: CuentaService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private location: Location
   ) { }
 
 
@@ -81,6 +83,7 @@ export class HeaderComponent implements OnInit {
    */
   navegarHaciaPrincipal() {
     if (this.usuarioAutenticado != null) this.router.navigate(['/portal']);
+    else this.location.back();
   } 
   
   /**
@@ -102,7 +105,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/portal']);
   }
 
-  navegarARealizarTransferencia () {
+  navegarASeleccionMovimiento () {
     this.router.navigate(['/seleccion-movimiento']);
   }
 

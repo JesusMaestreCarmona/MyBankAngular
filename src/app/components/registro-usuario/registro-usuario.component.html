@@ -1,8 +1,9 @@
 <div class="row">
-  <div class="col-12 col-md-10 col-lg-8 mx-auto my-5 shadow-sm rounded">
-    <mat-card>
-      <mat-card-header class="bg-secondary border-bottom-primary">
-        <mat-card-subtitle class="color-primary my-auto p-3">Formulario de registro</mat-card-subtitle>
+  <div class="col-12 p-0">
+    
+    <mat-card class="p-0">
+      <mat-card-header class="bg-secondary border-bottom-primary mb-4">
+        <mat-card-subtitle class="color-primary my-auto p-3">Rellena los siguientes campos para solicitar dinero</mat-card-subtitle>
         <button mat-icon-button color="primary" class="my-auto ml-auto mr-3" matTooltip="Volver a login" (click)="volverALogin()">
           <mat-icon>arrow_back</mat-icon>
         </button>      
@@ -10,10 +11,10 @@
       <mat-card-content>
         <mat-horizontal-stepper [linear]="true" #stepper>
           <mat-step [stepControl]="datosPrincipalesForm">
-            <form [formGroup]="datosPrincipalesForm">
+            <form [formGroup]="datosPrincipalesForm" class="mt-4">
               <ng-template matStepLabel>Datos principales</ng-template>
-              <div class="row d-flex justify-content-center my-4">
-                <div class="col-12 col-md-3 mx-1">        
+              <div class="row">
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Nombre</mat-label>
                     <input matInput formControlName="nombre">
@@ -23,7 +24,7 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-3 mx-1">        
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Primer apellido</mat-label>
                     <input matInput formControlName="apellido1">
@@ -33,7 +34,7 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-3 mx-1">        
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Segundo apellido</mat-label>
                     <input matInput formControlName="apellido2">
@@ -43,19 +44,21 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-5 mx-1">        
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email">
                     <ng-container *ngIf="datosPrincipalesForm.controls.email.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.required"><small>Campo requerido</small></div>
-                      <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                      <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.maxlength"><small>El límite de carácteres es de 40</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.pattern"><small>Dirección de correo no válida</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.emailExiste"><small>Ya hay un usuario registrado con este email</small></div>  
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-5 mx-1">        
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" [type]="mostrarPassword ? 'password' : 'text'">
@@ -70,16 +73,17 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div>
-                <button mat-raised-button [disabled]="datosPrincipalesForm.invalid" color="primary" matStepperNext>Siguiente</button>
+              <mat-divider></mat-divider>
+              <div class="mt-4 d-flex">
+                <button mat-stroked-button [disabled]="datosPrincipalesForm.invalid" color="primary" class="ml-auto" matStepperNext>Siguiente</button>
               </div>
             </form>
           </mat-step>
           <mat-step [stepControl]="datosSecundariosForm">
-            <form [formGroup]="datosSecundariosForm">
+            <form [formGroup]="datosSecundariosForm" class="mt-4">
               <ng-template matStepLabel>Datos secundarios</ng-template>
-              <div class="row d-flex justify-content-center my-4">
-                <div class="col-12 col-md-3 mx-1">        
+              <div class="row">
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Telefono</mat-label>
                     <input matInput formControlName="telefono">
@@ -89,7 +93,7 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-3 mx-1">        
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Dirección</mat-label>
                     <input matInput formControlName="direccion">
@@ -99,7 +103,7 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-3 mx-1">        
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Localidad</mat-label>
                     <input matInput formControlName="localidad">
@@ -109,7 +113,9 @@
                     </ng-container>
                   </mat-form-field>
                 </div>
-                <div class="col-12 col-md-3 mx-1">        
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-4">        
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Codigo postal</mat-label>
                     <input matInput formControlName="codigo_postal">
@@ -118,7 +124,7 @@
                     </ng-container>
                   </mat-form-field>
                 </div>   
-                <div class="col-12 col-md-3 mx-1">
+                <div class="col-12 col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Estado</mat-label>
                     <input matInput formControlName="estado">
@@ -128,9 +134,42 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div>
-                <button mat-raised-button matStepperPrevious class="mr-2">Volver</button>
-                <button mat-raised-button [disabled]="datosSecundariosForm.invalid" color="primary" matStepperNext>Siguiente</button>
+              <mat-divider></mat-divider>
+              <div class="mt-4 d-flex">
+                <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
+                <button mat-stroked-button [disabled]="datosSecundariosForm.invalid" color="primary" matStepperNext>Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="datosCuentaForm">
+            <form [formGroup]="datosCuentaForm" class="mt-4">
+              <ng-template matStepLabel>Datos cuenta</ng-template>
+              <div class="row d-flex justify-content-center">
+                <div class="col-5 col-md-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Divisa</mat-label>
+                    <mat-select formControlName="divisa">
+                      <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
+                        {{divisa.descripcion}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-11 col-md-7">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Descripción</mat-label>
+                    <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="datosCuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="datosCuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
+                    <textarea matInput formControlName="descripcion" class="text-justify"></textarea>
+                    <ng-container *ngIf="datosCuentaForm.controls.descripcion.errors">
+                      <div class="color-warn" *ngIf="datosCuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
+                    </ng-container>
+                  </mat-form-field>    
+                </div>    
+              </div>
+              <mat-divider></mat-divider>
+              <div class="mt-4 d-flex">
+                <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
+                <button mat-stroked-button [disabled]="datosCuentaForm.invalid" color="primary" matStepperNext>Siguiente</button>
               </div>
             </form>
           </mat-step>
@@ -142,19 +181,24 @@
               </button>
               <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file">
             </div>
-            <p class="text-center mb-4">Clic sobre la imagen para cambiarla</p>
-            <div>
-              <button mat-raised-button matStepperPrevious class="mr-2">Volver</button>
-              <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+            <div class="text-center mb-4">
+              <p>Clic sobre la imagen para cambiarla</p>
+              <mat-divider></mat-divider>
+            </div>
+            <div class="mt-4 d-flex">
+              <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
+              <button mat-stroked-button color="primary" matStepperNext>Siguiente</button>
             </div>  
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>Completado!</ng-template>
-            <p class="mt-4">Has terminado el proceso de registro. Haga click en confirmar.</p>
-            <div>
-              <button mat-button matStepperPrevious>Volver</button>
-              <button mat-button color="warn" (click)="stepper.reset()">Comenzar de nuevo</button>
-              <button mat-button color="primary" (click)="registrarUsuario()">Confirmar</button>
+            <div class="mt-4">
+              <p>Has terminado el proceso de registro. Haga click en confirmar.</p>
+            </div>
+            <div class="mt-4">
+              <button mat-stroked-button matStepperPrevious>Volver</button>
+              <button mat-stroked-button color="warn" class="mx-2" (click)="stepper.reset()">Comenzar de nuevo</button>
+              <button mat-stroked-button color="primary" (click)="registrarUsuario()">Confirmar</button>
             </div>
           </mat-step>
         </mat-horizontal-stepper>

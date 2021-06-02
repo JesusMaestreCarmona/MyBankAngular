@@ -36,6 +36,14 @@ export class CuentaService {
     return this.http.put<string>('/cuenta/actualizar', jsonObject);
   }
 
+  crearCuenta(descripcion: string, idDivisa: number) : Observable<string> {
+    var jsonObject = {
+      descripcion: descripcion,
+      idDivisa: idDivisa  
+    };
+    return this.http.put<string>('/cuenta/crear', jsonObject);
+  }
+
   emitirNuevoCambioEnCuentaActual (cuenta: Cuenta) {
     this.cambiosEnCuentaActual.emit(cuenta);
   }

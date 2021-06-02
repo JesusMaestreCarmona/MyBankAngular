@@ -74,7 +74,6 @@ export class UsuarioService {
       'codigo_postal': codigo_postal,
       'estado': estado
     };
-    console.log(jsonObject);
     return this.http.put<string>('/usuario/registrarUsuario', jsonObject);
   }
 
