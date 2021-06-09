@@ -26,7 +26,6 @@ export class DetalleCuentaComponent implements OnInit {
     private cuentaService: CuentaService,
     private divisaService: DivisaService,
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
-    private transferenciaService: TransferenciaService
   ) { }
 
   ngOnInit(): void {
@@ -67,7 +66,7 @@ export class DetalleCuentaComponent implements OnInit {
 
   seleccionarDivisa() {
     this.nuevaDivisa = this.divisas.filter(divisa => divisa.id == this.cuentaForm.controls.divisa.value);
-    this.transferenciaService.getCambioMoneda(this.cuenta.divisa.descripcion, this.nuevaDivisa[0]['descripcion']).subscribe(data => {
+    this.divisaService.getCambioMoneda(this.cuenta.divisa.descripcion, this.nuevaDivisa[0]['descripcion']).subscribe(data => {
       if (data['result'] == 'ok') {
         this.saldoCambioMoneda = parseFloat(data['cambioMoneda']) * this.cuenta.saldo;
       }

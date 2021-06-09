@@ -1,17 +1,17 @@
 <div class="row">
   <div class="col-12 p-0">
     
-    <mat-card class="p-0">
+    <mat-card class="p-0" *ngIf="movimientoForm != undefined">
       <mat-card-header class="bg-secondary border-bottom-primary mb-4">
-        <mat-card-subtitle class="color-primary my-auto p-3">Rellena los siguientes campos para solicitar dinero</mat-card-subtitle>
+        <mat-card-subtitle class="color-primary my-auto p-3">Rellena los siguientes campos para realizar el movimiento</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content class="mx-4" *ngIf="movimientoForm != undefined">
+      <mat-card-content class="mx-4">
         <form [formGroup]="movimientoForm">
           <div class="row">
             <div class="col-5 col-md-3 col-lg-2">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Tipo movimiento</mat-label>
-                <mat-select formControlName="tipo">
+                <mat-select formControlName="tipo" (selectionChange)="comprobarTipoMovimiento()">
                   <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo">
                     {{tipo}}
                   </mat-option>
@@ -23,17 +23,19 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-md-7 col-lg-5" *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'">        
+            <div class="col-12 col-md-7 col-lg-6" *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'">        
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Iban</mat-label>
                 <input matInput formControlName="iban">
                 <ng-container *ngIf="movimientoForm.controls.iban.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.required"><small>Campo requerido</small></div>
-                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.maxlength"><small>El límite de carácteres es de 60</small></div>
                 </ng-container>
               </mat-form-field>
             </div>
-            <div class="col-12 col-md-7">
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-7 col-lg-6">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Descripción</mat-label>
                 <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="movimientoForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="movimientoForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
@@ -49,24 +51,11 @@
             <div class="col-5 col-md-3 col-lg-2">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Importe</mat-label>
-                <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="movimientoForm.controls.divisa.value" formControlName="importe" />
+                <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuentaActual.divisa.descripcion" formControlName="importe" />
                 <ng-container *ngIf="movimientoForm.controls.importe.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.max"><small>Has superado tu saldo</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.min"><small>El importe debe ser mayor de 0</small></div>
-                </ng-container>
-              </mat-form-field>
-            </div>
-            <div class="col-5 col-md-3 col-lg-2" *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Divisa</mat-label>
-                <mat-select formControlName="divisa">
-                  <mat-option *ngFor="let divisa of divisas" [value]="divisa.descripcion">
-                    {{divisa.descripcion}}
-                  </mat-option>
-                </mat-select>
-                <ng-container *ngIf="movimientoForm.controls.divisa.errors">
-                  <div class="color-warn" *ngIf="movimientoForm.controls.divisa.errors.required"><small>Campo requerido</small></div>
                 </ng-container>
               </mat-form-field>
             </div>
@@ -75,7 +64,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions class="d-flex mx-0 my-4">
-        <button mat-stroked-button [disabled]="movimientoForm.invalid" color="primary" class="ml-auto">Solicitar</button>
+        <button mat-stroked-button [disabled]="movimientoForm.invalid" (click)="realizarMovimiento()" color="primary" class="ml-auto">{{movimientoForm.controls.tipo.value}}</button>
         <button mat-stroked-button color="warn" (click)="crearFormularioReactivo()">Reiniciar</button>
       </mat-card-actions>
     </mat-card>

@@ -31,7 +31,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { DialogoFiltroComponent } from './components/dialogo-filtro/dialogo-filtro.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -46,6 +45,7 @@ import { DetalleTransferenciaComponent } from './components/detalle-transferenci
 import { DetalleCuentaComponent } from './components/detalle-cuenta/detalle-cuenta.component';
 import { ModificarDatosUsuarioComponent } from './components/modificar-datos-usuario/modificar-datos-usuario.component';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+import { ListadoMovimientosComponent } from './components/listado-movimientos/listado-movimientos.component';
 
 @NgModule({
   declarations: [
@@ -55,13 +55,13 @@ import { RegistroUsuarioComponent } from './components/registro-usuario/registro
     PortalComponent,
     ImagenUsuarioComponent,
     HeaderComponent,
-    DialogoFiltroComponent,
     SeleccionMovimientoComponent,
     ListadoPeticionesComponent,
     DetalleTransferenciaComponent,
     DetalleCuentaComponent,
     ModificarDatosUsuarioComponent,
     RegistroUsuarioComponent,
+    ListadoMovimientosComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="shadow-sm">
+<mat-toolbar color="primary" class="shadow">
   <mat-toolbar-row>
     <button mat-button color="primary" (click)="navegarHaciaPrincipal()">
       <div class="marca border-bottom-secondary d-flex align-items-center">
@@ -33,14 +33,18 @@
       <app-imagen-usuario [imagen]="usuarioAutenticado.imagen" [width]="40" [height]="40"></app-imagen-usuario>
     </button> 
     <mat-menu #menuImagenUsuario="matMenu">
-      <button mat-menu-item (click)="navegarAHistorial()">
+      <button mat-menu-item (click)="navegarAListadoDeTransferencias()">
         <mat-icon class="color-primary">history</mat-icon>
-        <span>Historial de transferencias</span>
+        <span>Listado de transferencias</span>
+      </button>
+      <button mat-menu-item (click)="navegarAListadoDeMovimientos()">
+        <mat-icon class="color-primary">inbox</mat-icon>
+        <span>Listado de movimientos</span>
       </button>
       <button mat-menu-item (click)="navegarAListadoPeticiones()">
         <mat-icon *ngIf="totalPeticiones" matBadge="{{totalPeticiones}}" matBadgeColor="warn" matBadgeSize="small" class="color-primary">notifications_active</mat-icon>
         <mat-icon *ngIf="!totalPeticiones" class="color-primary">notifications_none</mat-icon>
-        <span>Peticiones de transferencia</span>
+        <span>Listado de peticiones</span>
       </button>
       <button mat-menu-item (click)="navegarASeleccionMovimiento()">
         <mat-icon class="color-primary">swap_horiz</mat-icon>

@@ -52,16 +52,18 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Telefono</mat-label>
                 <input matInput formControlName="telefono">
+                <mat-icon matSuffix>phone</mat-icon>
                 <ng-container *ngIf="datosForm.controls.telefono.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.telefono.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.telefono.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                </ng-container>    
+                </ng-container>
               </mat-form-field>
             </div>
             <div class="col-12 col-md-4">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Dirección</mat-label>
                 <input matInput formControlName="direccion">
+                <mat-icon matSuffix>home</mat-icon>
                 <ng-container *ngIf="datosForm.controls.direccion.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.direccion.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
@@ -72,6 +74,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Localidad</mat-label>
                 <input matInput formControlName="localidad">
+                <mat-icon matSuffix>location_city</mat-icon>
                 <ng-container *ngIf="datosForm.controls.localidad.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.localidad.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
@@ -84,6 +87,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Codigo postal</mat-label>
                 <input matInput formControlName="codigo_postal">
+                <mat-icon matSuffix>local_post_office</mat-icon>
                 <ng-container *ngIf="datosForm.controls.codigo_postal.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
@@ -93,6 +97,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Estado</mat-label>
                 <input matInput formControlName="estado">
+                <mat-icon matSuffix>people</mat-icon>
                 <ng-container *ngIf="datosForm.controls.estado.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
@@ -103,7 +108,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions class="d-flex mx-0 my-4">
-        <button mat-stroked-button [disabled]="datosForm.invalid" (click)="actualizarDatosUsuario()" color="primary" class="ml-auto">Solicitar</button>
+        <button mat-stroked-button [disabled]="datosForm.invalid" (click)="actualizarDatosUsuario()" color="primary" class="ml-auto">Modificar</button>
         <button mat-stroked-button color="warn" (click)="cargarDatosUsuarioEnFormulario()">Reiniciar</button>
       </mat-card-actions>
     </mat-card>

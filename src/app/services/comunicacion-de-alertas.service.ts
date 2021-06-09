@@ -70,11 +70,13 @@ export class ComunicacionDeAlertasService {
       return;
     }
     let snackBarRef = this.snackBar.open(mensajesAMostrar[this.posicionActualMensajesSnackbar], accion, {
-      duration: duracion
+      duration: duracion,
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom'
     }); 
-    if (accion == 'Mis apuestas') {
+    if (accion == 'Mis peticiones') {
       snackBarRef.onAction().subscribe(() => {
-        this.router.navigate(['/misApuestas']);
+        this.router.navigate(['/listado-peticiones']);
       });
     }
     snackBarRef.afterDismissed().subscribe(() => {

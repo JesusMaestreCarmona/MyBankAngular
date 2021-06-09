@@ -5,6 +5,7 @@ import { LoginUsuarioComponent } from './components/login-usuario/login-usuario.
 import { PortalComponent } from './components/portal/portal.component';
 import { SeleccionMovimientoComponent } from './components/seleccion-movimiento/seleccion-movimiento.component';
 import { ListadoPeticionesComponent } from './components/listado-peticiones/listado-peticiones.component';
+import { ListadoMovimientosComponent } from './components/listado-movimientos/listado-movimientos.component';
 import { ModificarDatosUsuarioComponent } from './components/modificar-datos-usuario/modificar-datos-usuario.component';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'portal', component: PortalComponent },
   { path: 'seleccion-movimiento', component: SeleccionMovimientoComponent },
   { path: 'listado-peticiones', component: ListadoPeticionesComponent },
+  { path: 'listado-movimientos', component: ListadoMovimientosComponent },
   { path: 'modificar-datos', component: ModificarDatosUsuarioComponent },
   { path: 'registro', component: RegistroUsuarioComponent }
 ];

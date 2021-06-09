@@ -69,7 +69,6 @@ export class RegistroUsuarioComponent implements OnInit {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.usuarioService.buscarEmail(control.value).pipe(
         map(data => {
-          console.log(data['emailEncontrado']);
           return (data['emailEncontrado'] == true)? { emailExiste: true } : null;
         })
       );
@@ -121,11 +120,15 @@ export class RegistroUsuarioComponent implements OnInit {
 
   usuarioSeleccionaFicheroImagen() {
     const inputNode: any = document.querySelector('#file');
+    const file = inputNode.files[0];
+    const ext = file.name.split('.').pop().toLowerCase;
 
-    if (typeof (FileReader) !== 'undefined') { 
+    let validExtension = (ext === 'jpg' || ext === 'jpeg' || ext === 'png') ? true : false;
+
+    if (validExtension) { 
       const reader = new FileReader(); 
 
-      reader.readAsArrayBuffer(inputNode.files[0]);
+      reader.readAsArrayBuffer(file);
 
       reader.onload = (e: any) => {
         this.imagenActual = btoa(
@@ -133,6 +136,9 @@ export class RegistroUsuarioComponent implements OnInit {
             .reduce((data, byte) => data + String.fromCharCode(byte), '')
         );
       };
+    }
+    else {
+      this.comunicacionDeAlertasService.abrirDialogError('El archivo seleccionado no es una imagen válida');
     }
   }
 

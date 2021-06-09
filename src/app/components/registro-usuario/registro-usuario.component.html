@@ -176,10 +176,10 @@
           <mat-step optional>
             <ng-template matStepLabel>Imagen de perfil</ng-template>
             <div class="d-flex justify-content-center my-4">
-              <button mat-button (click)="fileInput.click()"> 
-                  <app-imagen-usuario [imagen]="imagenActual" [width]="100" [height]="100"></app-imagen-usuario>
+              <button mat-button (click)="fileInput.click()" matTooltip="Click sobre la imagen para cambiarla"> 
+                <app-imagen-usuario [imagen]="imagenActual" [width]="100" [height]="100"></app-imagen-usuario>
               </button>
-              <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file">
+              <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
             </div>
             <div class="text-center mb-4">
               <p>Clic sobre la imagen para cambiarla</p>

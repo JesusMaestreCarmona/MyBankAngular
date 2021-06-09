@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cuenta, Divisa, Usuario } from 'src/app/interfaces/interfaces';
+import { AutenticadorJwtService } from 'src/app/services/autenticador-jwt.service';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
-import { DivisaService } from 'src/app/services/divisa.service';
-import { TransferenciaService } from 'src/app/services/transferencia.service';
+import { MovimientoService } from 'src/app/services/movimiento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -21,15 +21,18 @@ export class SeleccionMovimientoComponent implements OnInit {
   cuentaActual: Cuenta;
   movimientoForm: FormGroup;
   tiposMovimiento: string[] = ['Solicitar dinero', 'Enviar dinero', 'Retirar dinero', 'Ingresar dinero'];
-  divisas: Divisa[] = [];
+  movimientos = {
+    lista: [],
+    totalMovimientos: 0
+  }
 
   constructor(
     private router: Router,
     private usuarioService: UsuarioService,
     private cuentaService: CuentaService,
-    private transferenciaService: TransferenciaService,
-    private divisaService: DivisaService,
-    private comunicacionDeAlertasService: ComunicacionDeAlertasService
+    private movimientoService: MovimientoService,
+    private comunicacionDeAlertasService: ComunicacionDeAlertasService,
+    private autenticadorJWT: AutenticadorJwtService
   ) { }
 
   ngOnInit(): void {
@@ -53,26 +56,25 @@ export class SeleccionMovimientoComponent implements OnInit {
 
   getCuenta(id: number) {
     this.cuentaService.getCuentaUsuario(id).subscribe(data => {
+      let error = false;
       if (data['result'] == 'ok') {
         let cuenta = data['cuenta'];
         if (cuenta != null) {
           this.cuentaActual = cuenta;
           this.cuentaService.emitirNuevoCambioEnCuentaActual(this.cuentaActual);
-          this.obtenerDivisas();
+          this.crearFormularioReactivo();
         }
+        else error = true;
       }
-      else 
-        this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar la cuenta');
+      else error = true;
+      if (error) {
+        this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un problema al cargar la cuenta').subscribe(result => {
+          this.autenticadorJWT.eliminaJWT();
+          this.usuarioAutenticado = null;
+          this.router.navigate(['/login']);
+        });
+      }
     });    
-  }
-
-  obtenerDivisas() {
-    this.divisaService.getAllDivisas().subscribe(data => {
-      if (data['result'] == 'ok') { 
-        this.divisas = data['divisas'];
-        this.crearFormularioReactivo();
-      };
-    });
   }
 
   crearFormularioReactivo() {
@@ -81,7 +83,6 @@ export class SeleccionMovimientoComponent implements OnInit {
       iban: new FormControl ('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/)]),
       descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)]),
       importe: new FormControl (0, [Validators.required, Validators.min(0)]),
-      divisa: new FormControl (this.cuentaActual.divisa.descripcion, [Validators.required]),
     });
   }
 
@@ -93,6 +94,31 @@ export class SeleccionMovimientoComponent implements OnInit {
         })
       );
     };
+  }
+
+  realizarMovimiento() {
+    this.movimientoService.realizarMovimiento(
+      this.cuentaActual.id,
+      this.movimientoForm.controls.tipo.value,
+      this.movimientoForm.controls.iban.value,
+      this.movimientoForm.controls.descripcion.value,
+      this.movimientoForm.controls.importe.value,
+    ).subscribe(data => {
+      let mensaje = (data['result'] == 'ok') ? 'Movimiento realizado con éxito' : 'Ha habido un problema al realizar el movimiento'
+      this.comunicacionDeAlertasService.abrirDialogInfo(mensaje).subscribe(result => {
+        this.router.navigate(['/portal']);
+      });
+    });
+  }
+
+  comprobarTipoMovimiento() {
+    if (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Solicitar dinero') {
+      this.movimientoForm.controls.iban.setErrors(null);
+    }
+    let validators = (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Ingresar dinero')
+      ? [Validators.required, Validators.min(0), Validators.max(6)]
+      : [Validators.required, Validators.min(0)];
+    this.movimientoForm.controls.importe.setValidators(validators);
   }
 
 }

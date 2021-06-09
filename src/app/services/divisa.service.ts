@@ -13,4 +13,8 @@ export class DivisaService {
     return this.http.get<string>('/divisa/all');
   }
 
+  getCambioMoneda(divisa_origen: string, divisa_destino: string) : Observable<string> {
+    return this.http.get<string>('/divisa/getCambioMoneda?divisa_origen=' + divisa_origen + '&divisa_destino=' + divisa_destino);
+  }
+
 }

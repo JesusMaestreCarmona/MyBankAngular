@@ -4,28 +4,27 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Cuenta, Transferencia, Usuario } from 'src/app/interfaces/interfaces';
+import { Cuenta, Movimiento, Usuario } from 'src/app/interfaces/interfaces';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
-import { TransferenciaService } from 'src/app/services/transferencia.service';
+import { MovimientoService } from 'src/app/services/movimiento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { DetalleTransferenciaComponent } from '../detalle-transferencia/detalle-transferencia.component';
 
 @Component({
-  selector: 'app-listado-peticiones',
-  templateUrl: './listado-peticiones.component.html',
-  styleUrls: ['./listado-peticiones.component.scss']
+  selector: 'app-listado-movimientos',
+  templateUrl: './listado-movimientos.component.html',
+  styleUrls: ['./listado-movimientos.component.scss']
 })
-export class ListadoPeticionesComponent implements OnInit {
+export class ListadoMovimientosComponent implements OnInit {
 
   usuarioAutenticado: Usuario;
   cuentaActual: Cuenta;
-  nombresDeColumnas: string[] = ['destinatario', 'descripcion', 'importe',  'fecha'];
-  peticiones = {
+  nombresDeColumnas: string[] = ['tipo', 'importe',  'fecha', 'descripcion'];
+  movimientos = {
     lista: [],
-    totalPeticiones: 0
+    totalMovimientos: 0
   }
-  dataSourceTabla: MatTableDataSource<Transferencia>;
+  dataSourceTabla: MatTableDataSource<Movimiento>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -33,7 +32,7 @@ export class ListadoPeticionesComponent implements OnInit {
     private usuarioService: UsuarioService, 
     private router: Router,
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
-    private transferenciaService: TransferenciaService,
+    private movimientoService: MovimientoService,
     private cuentaService: CuentaService,
     private paginatorIntl: MatPaginatorIntl,
     private dialog: MatDialog
@@ -92,31 +91,19 @@ export class ListadoPeticionesComponent implements OnInit {
     this.comunicacionDeAlertasService.abrirDialogCargando();
     let pagina = event == null ? 0 : event.pageIndex;
     let elementosPorPagina = event == null ? 10 : event.pageSize;
-    this.transferenciaService.getPeticionesCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
+    this.movimientoService.getMovimientosCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
-        this.peticiones.lista = data['peticiones'];
-        this.peticiones.totalPeticiones = data['totalPeticiones'];
-        if (this.peticiones.totalPeticiones != 0) {
-          this.dataSourceTabla = new MatTableDataSource<Transferencia>(this.peticiones.lista);
+        this.movimientos.lista = data['movimientos'];
+        this.movimientos.totalMovimientos = data['totalMovimientos'];
+        if (this.movimientos.totalMovimientos != 0) {
+          this.dataSourceTabla = new MatTableDataSource<Movimiento>(this.movimientos.lista);
           this.dataSourceTabla.sort = this.sort;
         }
       }
       else 
-        this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar las peticiones');
+        this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar los movimientos');
     });    
-  }
-
-  seleccionarTransferencia(transferencia: Transferencia) {
-    const dialogRef = this.dialog.open(DetalleTransferenciaComponent, {
-      width: '70%',
-      height: '80%',
-      data: transferencia,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.actualizarHistorial(null);
-    });
   }
 
 }

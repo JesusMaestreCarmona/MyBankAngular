@@ -4,13 +4,13 @@ import { Cuenta, Transferencia, Usuario } from 'src/app/interfaces/interfaces';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogoFiltroComponent } from 'src/app/components/dialogo-filtro/dialogo-filtro.component';
 import { TransferenciaService } from 'src/app/services/transferencia.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { DetalleTransferenciaComponent } from '../detalle-transferencia/detalle-transferencia.component';
+import { AutenticadorJwtService } from 'src/app/services/autenticador-jwt.service';
 
 @Component({
   selector: 'app-portal',
@@ -34,11 +34,11 @@ export class PortalComponent implements OnInit {
     private usuarioService: UsuarioService, 
     private router: Router,
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
-    private matDialog: MatDialog,
     private transferenciaService: TransferenciaService,
     private cuentaService: CuentaService,
-    private paginatorIntl : MatPaginatorIntl,
-    private dialog: MatDialog
+    private paginatorIntl: MatPaginatorIntl,
+    private dialog: MatDialog,
+    private autenticadorJWT: AutenticadorJwtService
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +54,7 @@ export class PortalComponent implements OnInit {
         this.configuraEtiquetasDelPaginador();    
       }
     });
+
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
       this.cuentaActual = nuevaCuentaActual;
       this.cuentaService.almacenaCuentaActual(this.cuentaActual.id);
@@ -74,20 +75,24 @@ export class PortalComponent implements OnInit {
   }
 
   getCuenta(id: number) {
-    this.comunicacionDeAlertasService.abrirDialogCargando();
     this.cuentaService.getCuentaUsuario(id).subscribe(data => {
-      this.comunicacionDeAlertasService.cerrarDialogo();
+      let error = false;
       if (data['result'] == 'ok') {
         let cuenta = data['cuenta'];
         if (cuenta != null) {
           this.cuentaActual = cuenta;
           this.cuentaService.emitirNuevoCambioEnCuentaActual(this.cuentaActual);
-          this.actualizarHistorial(null);
         }
-        else console.log('Es eso');
+        else error = true;
       }
-      else 
-        this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar la cuenta');
+      else error = true;
+      if (error) {
+        this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un problema al cargar la cuenta').subscribe(result => {
+          this.autenticadorJWT.eliminaJWT();
+          this.usuarioAutenticado = null;
+          this.router.navigate(['/login']);
+        });
+      }
     });    
   }
 
@@ -95,23 +100,34 @@ export class PortalComponent implements OnInit {
     this.comunicacionDeAlertasService.abrirDialogCargando();
     let pagina = event == null ? 0 : event.pageIndex;
     let elementosPorPagina = event == null ? 10 : event.pageSize;
-    this.transferenciaService.getTransferenciasCuenta(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
+    this.transferenciaService.getTransferenciasCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
         this.transferencias.lista = data['transferencias'];
         this.transferencias.totalTransferencias = data['totalTransferencias'];
-        if (this.transferencias.lista.length != 0) {
+        if (this.transferencias.totalTransferencias != 0) {
           this.dataSourceTabla = new MatTableDataSource<Transferencia>(this.transferencias.lista);
           this.dataSourceTabla.sort = this.sort;
         }
+        this.comprobarPeticionesANotificar();
       }
       else 
         this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar las transferencias');
     });    
   }
 
-  abrirFiltro() {
-    this.matDialog.open(DialogoFiltroComponent);
+  comprobarPeticionesANotificar() {
+    this.transferenciaService.getPeticionesANotificar(this.cuentaActual.id).subscribe(data => {
+      this.usuarioService.emitirNuevoCambioEnUsuarioAutenticado();
+      let peticionesANotificar = data['peticiones'];
+      let mensajesAMostrar = [];
+      peticionesANotificar.forEach(peticion => {
+        mensajesAMostrar.push(`Ha recibido una petición de ${peticion.cuenta_destino.titular.nombre} ${peticion.cuenta_destino.titular.apellido1} 
+        ${peticion.cuenta_destino.titular.apellido2}`);
+      });
+      let accion = 'Listado peticiones';
+      this.comunicacionDeAlertasService.mostrarMensajesSnackbar(mensajesAMostrar, accion, 3000);
+    });
   }
 
   seleccionarTransferencia(transferencia: Transferencia) {

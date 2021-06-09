@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   // Necesito varios objetos inyectados en este componente
   constructor(
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
-    private autenticacionPorJWT: AutenticadorJwtService,
+    private autenticadorJWT: AutenticadorJwtService,
     private router: Router,
     private usuarioService: UsuarioService,
     private transferenciaService: TransferenciaService,
@@ -92,7 +92,7 @@ export class HeaderComponent implements OnInit {
   dialogoAbandonarSesion() {
     this.comunicacionDeAlertasService.abrirDialogConfirmacion ('¿Realmente desea abandonar la sesión?').subscribe(opcionElegida => {
       if (opcionElegida == DialogTypes.RESPUESTA_ACEPTAR) {
-        this.autenticacionPorJWT.eliminaJWT();
+        this.autenticadorJWT.eliminaJWT();
         this.usuarioAutenticado = null;
         this.cuentaService.eliminaCuentaActual();
         this.cuentaActual = null;
@@ -101,16 +101,20 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  navegarAHistorial() {
+  navegarAListadoDeTransferencias() {
     this.router.navigate(['/portal']);
   }
 
-  navegarASeleccionMovimiento () {
-    this.router.navigate(['/seleccion-movimiento']);
+  navegarAListadoDeMovimientos() {
+    this.router.navigate(['/listado-movimientos']);
   }
 
   navegarAListadoPeticiones () {
     this.router.navigate(['/listado-peticiones']);
+  }
+
+  navegarASeleccionMovimiento () {
+    this.router.navigate(['/seleccion-movimiento']);
   }
 
   navegarAMiCuenta() {
