@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortalComponent } from './portal.component';
+import { DetalleMovimientoComponent } from './detalle-movimiento.component';
 
-describe('PortalComponent', () => {
-  let component: PortalComponent;
-  let fixture: ComponentFixture<PortalComponent>;
+describe('DetalleMovimientoComponent', () => {
+  let component: DetalleMovimientoComponent;
+  let fixture: ComponentFixture<DetalleMovimientoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PortalComponent ]
+      declarations: [ DetalleMovimientoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PortalComponent);
+    fixture = TestBed.createComponent(DetalleMovimientoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

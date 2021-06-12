@@ -25,12 +25,12 @@ export class LoginUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioService.getUsuarioAutenticado(false).subscribe(usuario => {
       if (usuario != null) {
-        this.router.navigate(['/portal']);
+        this.router.navigate(['/listado-transferencias']);
       }
     });
     this.loginForm = new FormGroup({
       email: new FormControl ('jesus@jesus.com', [Validators.required, Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)]),
-      password: new FormControl ('1234', [Validators.required])
+      password: new FormControl ('12345678', [Validators.required])
     });
   }
 
@@ -41,7 +41,7 @@ export class LoginUsuarioComponent implements OnInit {
         this.autenticadorJwtService.almacenaJWT(data.jwt);
         this.usuarioService.emitirNuevoCambioEnUsuarioAutenticado(); 
         this.comunicacionAlertasService.cerrarDialogo();
-        this.router.navigate(['/portal']);
+        this.router.navigate(['/listado-transferencias']);
       } 
       else {
         this.comunicacionAlertasService.abrirDialogError('El usuario y contraseña introducidos no permiten el acceso');

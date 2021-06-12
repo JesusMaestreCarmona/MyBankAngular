@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
     private transferenciaService: TransferenciaService,
     private cuentaService: CuentaService,
     private dialog: MatDialog,
-    private location: Location
+    public location: Location
   ) { }
 
 
@@ -72,8 +72,8 @@ export class HeaderComponent implements OnInit {
 
   abrirDetalleCuenta(cuenta: Cuenta) {
     this.dialog.open(DetalleCuentaComponent, {
-      width: '70%',
-      height: '70%',
+      width: '80%',
+      height: '80%',
       data: cuenta,
     });
   }
@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
    * El logo de la barra de herramientas nos llevará al listado de mensajes
    */
   navegarHaciaPrincipal() {
-    if (this.usuarioAutenticado != null) this.router.navigate(['/portal']);
+    if (this.usuarioAutenticado != null) this.router.navigate(['/listado-transferencias']);
     else this.location.back();
   } 
   
@@ -102,7 +102,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navegarAListadoDeTransferencias() {
-    this.router.navigate(['/portal']);
+    this.router.navigate(['/listado-transferencias']);
   }
 
   navegarAListadoDeMovimientos() {

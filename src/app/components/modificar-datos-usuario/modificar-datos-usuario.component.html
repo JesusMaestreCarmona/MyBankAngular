@@ -2,54 +2,55 @@
   <div class="col-12 p-0">
 
     <mat-card class="p-0">
-      <mat-card-header class="bg-secondary border-bottom-primary mb-4">
+      <mat-card-header class="bg-secondary border-bottom-primary">
         <mat-card-subtitle class="color-primary my-auto p-3">Formulario para la modificación de datos</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content class="mx-4" *ngIf="datosForm != undefined">
+      <mat-card-content *ngIf="datosForm != undefined">
         <form [formGroup]="datosForm">
           <div class="row">
-            <div class="col-12 d-flex justify-content-center mb-4">
-              <button mat-button (click)="fileInput.click()" matTooltip="Click sobre la imagen para cambiarla"> 
-                <app-imagen-usuario *ngIf="usuarioAutenticado != null" [imagen]="usuarioAutenticado.imagen" [width]="100" [height]="100"></app-imagen-usuario>
-              </button>
-              <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+            <div class="col-12 col-md-6 col-lg-4 p-4 border">
+              <h4 class="color-accent">DATOS PRINCIPALES</h4>
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="nombre">
                 <ng-container *ngIf="datosForm.controls.nombre.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.nombre.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.nombre.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
-              </mat-form-field>
-            </div>
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              </mat-form-field>    
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Primer apellido</mat-label>
                 <input matInput formControlName="apellido1">
                 <ng-container *ngIf="datosForm.controls.apellido1.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.apellido1.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.apellido1.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
-              </mat-form-field>
-            </div>
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              </mat-form-field>    
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Segundo apellido</mat-label>
                 <input matInput formControlName="apellido2">
                 <ng-container *ngIf="datosForm.controls.apellido2.errors">
                   <div class="color-warn" *ngIf="datosForm.controls.apellido2.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="datosForm.controls.apellido2.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
-              </mat-form-field>
+              </mat-form-field>    
+              <mat-form-field appearance="legacy" class="w-100" matTooltip="El email no puede ser modificado">
+                <mat-label>Email</mat-label>
+                <input matInput disabled [value]="usuarioAutenticado.email">
+              </mat-form-field>    
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Contraseña</mat-label>
+                <input matInput formControlName="password">
+                <ng-container *ngIf="datosForm.controls.password.touched && datosForm.controls.password.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container>    
+              </mat-form-field>    
             </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+            <div class="col-12 col-md-6 col-lg-4 p-4 border">
+              <h4 class="color-accent">DATOS SECUNDARIOS</h4>
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Telefono</mat-label>
                 <input matInput formControlName="telefono">
                 <mat-icon matSuffix>phone</mat-icon>
@@ -58,9 +59,7 @@
                   <div class="color-warn" *ngIf="datosForm.controls.telefono.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>
               </mat-form-field>
-            </div>
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Dirección</mat-label>
                 <input matInput formControlName="direccion">
                 <mat-icon matSuffix>home</mat-icon>
@@ -69,9 +68,7 @@
                   <div class="color-warn" *ngIf="datosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
               </mat-form-field>
-            </div>
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Localidad</mat-label>
                 <input matInput formControlName="localidad">
                 <mat-icon matSuffix>location_city</mat-icon>
@@ -80,11 +77,7 @@
                   <div class="color-warn" *ngIf="datosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
               </mat-form-field>
-            </div>
-          </div>
-          <div class="row d-flex justify-content-center">
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Codigo postal</mat-label>
                 <input matInput formControlName="codigo_postal">
                 <mat-icon matSuffix>local_post_office</mat-icon>
@@ -92,9 +85,7 @@
                   <div class="color-warn" *ngIf="datosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
               </mat-form-field>
-            </div>
-            <div class="col-12 col-md-4">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Estado</mat-label>
                 <input matInput formControlName="estado">
                 <mat-icon matSuffix>people</mat-icon>
@@ -103,11 +94,26 @@
                 </ng-container>    
               </mat-form-field>
             </div>
+            <div class="col-12 col-md-6 col-lg-4 p-4 border">
+              <h4 class="color-accent m-0">IMAGEN USUARIO</h4>
+              <div class="row h-100">
+                <div class="col-12 d-flex justify-content-center">
+                  <div class="d-flex align-content-center">
+                    <button mat-button (click)="fileInput.click()" class="my-auto" matTooltip="Click sobre la imagen para cambiarla"> 
+                      <app-imagen-usuario *ngIf="usuarioAutenticado != null" [imagen]="usuarioAutenticado.imagen" [width]="100" [height]="100"></app-imagen-usuario>
+                    </button>
+                    <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <p class="text-center">Click sobre la imagen para cambiarla</p>
+                </div>
+              </div>
+            </div>
           </div>
         </form>    
       </mat-card-content>
-      <mat-divider></mat-divider>
-      <mat-card-actions class="d-flex mx-0 my-4">
+      <mat-card-actions class="d-flex mx-0">
         <button mat-stroked-button [disabled]="datosForm.invalid" (click)="actualizarDatosUsuario()" color="primary" class="ml-auto">Modificar</button>
         <button mat-stroked-button color="warn" (click)="cargarDatosUsuarioEnFormulario()">Reiniciar</button>
       </mat-card-actions>

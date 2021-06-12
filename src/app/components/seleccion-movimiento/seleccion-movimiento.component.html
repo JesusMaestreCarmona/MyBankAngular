@@ -9,7 +9,7 @@
         <form [formGroup]="movimientoForm">
           <div class="row">
             <div class="col-5 col-md-3 col-lg-2">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Tipo movimiento</mat-label>
                 <mat-select formControlName="tipo" (selectionChange)="comprobarTipoMovimiento()">
                   <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo">
@@ -24,23 +24,24 @@
           </div>
           <div class="row">
             <div class="col-12 col-md-7 col-lg-6" *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'">        
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Iban</mat-label>
                 <input matInput formControlName="iban">
-                <ng-container *ngIf="movimientoForm.controls.iban.errors">
+                <ng-container *ngIf="movimientoForm.controls.iban.touched && movimientoForm.controls.iban.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.required"><small>Campo requerido</small></div>
-                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.maxlength"><small>El límite de carácteres es de 60</small></div>
+                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.pattern"><small>Este campo solo puede contener números y letras</small></div>
                 </ng-container>
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12 col-md-7 col-lg-6">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Descripción</mat-label>
                 <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="movimientoForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="movimientoForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
                 <textarea matInput formControlName="descripcion" class="text-justify"></textarea>
-                <ng-container *ngIf="movimientoForm.controls.descripcion.errors">
+                <ng-container *ngIf="movimientoForm.controls.descripcion.touched && movimientoForm.controls.descripcion.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.descripcion.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
                 </ng-container>
@@ -49,10 +50,10 @@
           </div>
           <div class="row">
             <div class="col-5 col-md-3 col-lg-2">
-              <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Importe</mat-label>
                 <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuentaActual.divisa.descripcion" formControlName="importe" />
-                <ng-container *ngIf="movimientoForm.controls.importe.errors">
+                <ng-container *ngIf="movimientoForm.controls.importe.touched && movimientoForm.controls.importe.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.max"><small>Has superado tu saldo</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.importe.errors.min"><small>El importe debe ser mayor de 0</small></div>

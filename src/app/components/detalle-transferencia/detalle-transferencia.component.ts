@@ -37,7 +37,7 @@ export class DetalleTransferenciaComponent implements OnInit {
         }
         else 
           this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un problema al cargar el detalle').subscribe(() => {
-            this.router.navigate(['/portal']);
+            this.router.navigate(['/listado-transferencias']);
           });
       });
     });
@@ -47,7 +47,7 @@ export class DetalleTransferenciaComponent implements OnInit {
     this.movimientoService.realizarMovimiento(this.transferencia.id, 'Aceptar petición').subscribe(data => {
       if (data['result'] == 'ok') {
         this.comunicacionDeAlertasService.abrirDialogInfo('La petición se ha aceptado con éxito').subscribe(() => {
-          this.router.navigate(['/portal']);
+          this.router.navigate(['/listado-transferencias']);
         });
       }
       else 
@@ -59,7 +59,7 @@ export class DetalleTransferenciaComponent implements OnInit {
     this.movimientoService.realizarMovimiento(this.transferencia.id, 'Rechazar petición').subscribe(data => {
       if (data['result'] == 'ok') {
         this.comunicacionDeAlertasService.abrirDialogInfo('La petición se ha rechazado con éxito').subscribe(() => {
-          this.router.navigate(['/portal']);
+          this.router.navigate(['/listado-transferencias']);
         });
       }
       else 

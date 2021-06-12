@@ -3,26 +3,23 @@
 table {
   width: 100%;
 }
+
+.mat-cell {
+  transition: 0.5s;
+}
   
-tr.element-row:hover {
-  background: $color-secondary;
+.mat-row:hover {
   cursor: pointer;
+  .mat-cell {
+    background-color: darken($color-secondary, 5%);
+  }
 }
 
 td {
-  width: 200px;
+  max-width: 100px;
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
-}
-
-td div {
-  width: 200px;
-  white-space: nowrap;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 .fixed-bottom {
@@ -75,4 +72,13 @@ td div {
 
 ::ng-deep .mat-simple-snackbar-action {
   color: $color-primary;
+}
+
+::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-standard-chip {
+  border-radius: 10px !important;
 }

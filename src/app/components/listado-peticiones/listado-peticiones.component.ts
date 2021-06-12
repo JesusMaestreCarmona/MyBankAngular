@@ -50,7 +50,7 @@ export class ListadoPeticionesComponent implements OnInit {
     });
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
       this.cuentaActual = nuevaCuentaActual;
-      this.actualizarHistorial(null);
+      this.actualizarHistorial(0, 10);
     });
   }
 
@@ -88,10 +88,8 @@ export class ListadoPeticionesComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(event) {
+  actualizarHistorial(pagina, elementosPorPagina) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
-    let pagina = event == null ? 0 : event.pageIndex;
-    let elementosPorPagina = event == null ? 10 : event.pageSize;
     this.transferenciaService.getPeticionesCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
@@ -110,12 +108,11 @@ export class ListadoPeticionesComponent implements OnInit {
   seleccionarTransferencia(transferencia: Transferencia) {
     const dialogRef = this.dialog.open(DetalleTransferenciaComponent, {
       width: '70%',
-      height: '80%',
       data: transferencia,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.actualizarHistorial(null);
+      this.actualizarHistorial(0, 10);
     });
   }
 

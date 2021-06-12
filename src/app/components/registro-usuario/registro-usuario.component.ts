@@ -60,8 +60,8 @@ export class RegistroUsuarioComponent implements OnInit {
     });
 
     this.datosCuentaForm = new FormGroup({
-      descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)]),
-      divisa: new FormControl ('', [Validators.required])
+      divisa: new FormControl ('', [Validators.required]),
+      descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)])
     });
   }
 
@@ -108,7 +108,7 @@ export class RegistroUsuarioComponent implements OnInit {
   creacionCuenta() {
     this.cuentaService.crearCuenta(this.datosCuentaForm.controls.descripcion.value, this.datosCuentaForm.controls.divisa.value).subscribe(data => {
       if (data['result'] == 'ok') {
-        this.router.navigate(['/portal']);
+        this.router.navigate(['/listado-transferencias']);
       }
       else {
         this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un error durante el registro, será redirigido al login al cerrar esta ventana').subscribe(opcionElegida => {

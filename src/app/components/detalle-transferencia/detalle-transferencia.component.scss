@@ -1,2 +1,35 @@
+@import '../../../variables.scss';
 
+.mat-expansion-panel {
+  box-shadow: none !important;
+}
 
+.mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+  background-color: $color-secondary;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar:vertical {
+  width: 5px;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar-button:increment, ::ng-deep.mat-dialog-container::-webkit-scrollbar-button {
+  display: none;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar-thumb {
+  background-color: darken($color-secondary, 20%);
+  border-radius: 20px;
+}
+
+::ng-deep.mat-dialog-container::-webkit-scrollbar-thumb:hover {
+  background-color: darken($color-secondary, 40%);
+}

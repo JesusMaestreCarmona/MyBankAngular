@@ -80,9 +80,9 @@ export class SeleccionMovimientoComponent implements OnInit {
   crearFormularioReactivo() {
     this.movimientoForm = new FormGroup({
       tipo: new FormControl ('Solicitar dinero', [Validators.required]),
-      iban: new FormControl ('', [Validators.required, Validators.pattern(/[a-zA-Z0-9]+/)]),
+      iban: new FormControl ('', [Validators.required, Validators.maxLength(50), Validators.pattern(/[a-zA-Z0-9]+/)]),
       descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)]),
-      importe: new FormControl (0, [Validators.required, Validators.min(0)]),
+      importe: new FormControl (0, [Validators.required, Validators.min(0.01)]),
     });
   }
 
@@ -106,19 +106,18 @@ export class SeleccionMovimientoComponent implements OnInit {
     ).subscribe(data => {
       let mensaje = (data['result'] == 'ok') ? 'Movimiento realizado con éxito' : 'Ha habido un problema al realizar el movimiento'
       this.comunicacionDeAlertasService.abrirDialogInfo(mensaje).subscribe(result => {
-        this.router.navigate(['/portal']);
+        this.router.navigate(['/listado-transferencias']);
       });
     });
   }
 
   comprobarTipoMovimiento() {
+    let importeValidators = [Validators.required, Validators.min(0)];
     if (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Solicitar dinero') {
-      this.movimientoForm.controls.iban.setErrors(null);
+      importeValidators = [Validators.required, Validators.min(0), Validators.max(6)];
     }
-    let validators = (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Ingresar dinero')
-      ? [Validators.required, Validators.min(0), Validators.max(6)]
-      : [Validators.required, Validators.min(0)];
-    this.movimientoForm.controls.importe.setValidators(validators);
+    this.movimientoForm.controls.iban.setErrors(null);
+    this.movimientoForm.controls.importe.setValidators(importeValidators);
   }
 
 }

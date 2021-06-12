@@ -9,6 +9,7 @@ import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-a
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { MovimientoService } from 'src/app/services/movimiento.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { DetalleMovimientoComponent } from '../detalle-movimiento/detalle-movimiento.component';
 
 @Component({
   selector: 'app-listado-movimientos',
@@ -19,7 +20,7 @@ export class ListadoMovimientosComponent implements OnInit {
 
   usuarioAutenticado: Usuario;
   cuentaActual: Cuenta;
-  nombresDeColumnas: string[] = ['tipo', 'importe',  'fecha', 'descripcion'];
+  nombresDeColumnas: string[] = ['tipo', 'descripcion', 'importe',  'fecha'];
   movimientos = {
     lista: [],
     totalMovimientos: 0
@@ -49,7 +50,7 @@ export class ListadoMovimientosComponent implements OnInit {
     });
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
       this.cuentaActual = nuevaCuentaActual;
-      this.actualizarHistorial(null);
+      this.actualizarHistorial(0, 10);
     });
   }
 
@@ -87,10 +88,8 @@ export class ListadoMovimientosComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(event) {
+  actualizarHistorial(pagina, elementosPorPagina) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
-    let pagina = event == null ? 0 : event.pageIndex;
-    let elementosPorPagina = event == null ? 10 : event.pageSize;
     this.movimientoService.getMovimientosCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
@@ -104,6 +103,18 @@ export class ListadoMovimientosComponent implements OnInit {
       else 
         this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar los movimientos');
     });    
+  }
+
+  seleccionarMovimiento(movimiento: Movimiento) {
+    const dialogRef = this.dialog.open(DetalleMovimientoComponent, {
+      width: '80%',
+      height: '80%',
+      data: movimiento,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.actualizarHistorial(0, 10);
+    });
   }
 
 }

@@ -13,11 +13,11 @@ import { DetalleTransferenciaComponent } from '../detalle-transferencia/detalle-
 import { AutenticadorJwtService } from 'src/app/services/autenticador-jwt.service';
 
 @Component({
-  selector: 'app-portal',
-  templateUrl: './portal.component.html',
-  styleUrls: ['./portal.component.scss']
+  selector: 'app-listado-transferencias',
+  templateUrl: './listado-transferencias.component.html',
+  styleUrls: ['./listado-transferencias.component.scss']
 })
-export class PortalComponent implements OnInit {
+export class ListadoTransferenciasComponent implements OnInit {
 
   usuarioAutenticado: Usuario;
   cuentaActual: Cuenta;
@@ -58,7 +58,7 @@ export class PortalComponent implements OnInit {
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
       this.cuentaActual = nuevaCuentaActual;
       this.cuentaService.almacenaCuentaActual(this.cuentaActual.id);
-      this.actualizarHistorial(null);
+      this.actualizarHistorial(0, 10);
     });
   }
 
@@ -72,6 +72,10 @@ export class PortalComponent implements OnInit {
       const end = (page + 1) * pageSize;
       return `${start} - ${end} de ${length}`;
     };
+    document.querySelector('.mat-paginator-navigation-first').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-previous').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-next').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-last').classList.add('mat-primary');
   }
 
   getCuenta(id: number) {
@@ -96,10 +100,8 @@ export class PortalComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(event) {
+  actualizarHistorial(pagina: number, elementosPorPagina: number) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
-    let pagina = event == null ? 0 : event.pageIndex;
-    let elementosPorPagina = event == null ? 10 : event.pageSize;
     this.transferenciaService.getTransferenciasCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
@@ -132,13 +134,13 @@ export class PortalComponent implements OnInit {
 
   seleccionarTransferencia(transferencia: Transferencia) {
     const dialogRef = this.dialog.open(DetalleTransferenciaComponent, {
-      width: '70%',
+      width: '80%',
       height: '80%',
       data: transferencia,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.actualizarHistorial(null);
+      this.actualizarHistorial(0, 10);
     });
   }
 

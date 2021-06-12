@@ -5,7 +5,6 @@ import { Cuenta, Divisa } from 'src/app/interfaces/interfaces';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { DivisaService } from 'src/app/services/divisa.service';
-import { TransferenciaService } from 'src/app/services/transferencia.service';
 
 @Component({
   selector: 'app-detalle-cuenta',

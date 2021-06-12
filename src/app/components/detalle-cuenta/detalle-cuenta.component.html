@@ -7,60 +7,74 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row mt-4">
-      <div class="col">
-        <form [formGroup]="cuentaForm">
-          <div class="row d-flex justify-content-center">
-            <div class="col-12 col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Titular</mat-label>
-                <input matInput [value]="cuenta.titular.nombre + ' ' + cuenta.titular.apellido1 + ' ' + cuenta.titular.apellido2" class="text-center" [readonly]="true">
-              </mat-form-field>
+      <button mat-raised-button color="primary" class="mb-2 ml-auto" [disabled]="idCuentaActual == cuenta.id" (click)="seleccionarCuenta()">{{idCuentaActual == cuenta.id ? 'Esta cuenta es la actual' : 'Seleccionar cuenta'}}</button>
+      <div class="col-12">
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos principales
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Titular</mat-label>
+                    <input matInput readonly [value]="cuenta.titular.nombre + ' ' + cuenta.titular.apellido1 + ' ' + cuenta.titular.apellido2">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Iban</mat-label>
+                    <input matInput readonly [value]="cuenta.iban">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Saldo</mat-label>
+                    <input matInput readonly mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuenta.divisa.descripcion" [value]="cuenta.saldo" class="color-success" />
+                  </mat-form-field>    
+                </div>
+              </div>
             </div>
-            <div class="col-12 col-md-6">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Iban</mat-label>
-                <input matInput [value]="cuenta.iban" class="text-center" [readonly]="true">
-              </mat-form-field>    
+          </mat-expansion-panel>
+
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos secundarios
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <form [formGroup]="cuentaForm">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>Divisa</mat-label>
+                      <mat-select formControlName="divisa" (selectionChange)="seleccionarDivisa()">
+                        <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
+                          {{divisa.descripcion}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>    
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <mat-form-field appearance="legacy" class="w-100">
+                      <mat-label>Descripción</mat-label>
+                      <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="cuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="cuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
+                      <textarea matInput formControlName="descripcion" class="text-justify">{{cuenta.descripcion}}</textarea>
+                      <ng-container *ngIf="cuentaForm.controls.descripcion.errors">
+                        <div class="color-warn" *ngIf="cuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
+                      </ng-container>
+                    </mat-form-field>    
+                  </div>
+                  <button mat-raised-button color="accent" class="ml-auto" [disabled]="cuentaForm.invalid || (cuentaForm.controls.descripcion.value == cuenta.descripcion && cuentaForm.controls.divisa.value == cuenta.divisa.id)" (click)="actualizarCuenta()">Actualizar datos secundarios</button>
+                </div>
+              </form>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-6 col-md-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Saldo</mat-label>
-                <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuenta.divisa.descripcion" [value]="cuenta.saldo" class="{{cuenta.saldo > 0 ? 'color-success' : 'color-warn'}} text-center" [readonly]="true" />
-                <mat-hint *ngIf="cuenta.divisa.id != cuentaForm.controls.divisa.value && saldoCambioMoneda != null">Nuevo saldo: {{saldoCambioMoneda}}</mat-hint>
-              </mat-form-field>
-            </div>
-            <div class="col-6 col-md-2">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Divisa</mat-label>
-                <mat-select formControlName="divisa" (selectionChange)="seleccionarDivisa()">
-                  <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
-                    {{divisa.descripcion}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="col-12 col-md-8">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Descripción</mat-label>
-                <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="cuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="cuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
-                <textarea matInput formControlName="descripcion" class="text-justify">{{cuenta.descripcion}}</textarea>
-                <ng-container *ngIf="cuentaForm.controls.descripcion.errors">
-                  <div class="color-warn" *ngIf="cuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
-                </ng-container>
-              </mat-form-field>    
-            </div>
-          </div>
-          <div class="row my-2">
-            <div class="col-12 col-md-6 mb-2">
-              <button mat-raised-button color="primary" class="w-100" [disabled]="idCuentaActual == cuenta.id" (click)="seleccionarCuenta()">{{idCuentaActual == cuenta.id ? 'Esta cuenta es la actual' : 'Seleccionar cuenta'}}</button>
-            </div>
-            <div class="col-12 col-md-6">
-              <button mat-raised-button color="accent" class="w-100" [disabled]="cuentaForm.invalid || (cuentaForm.controls.descripcion.value == cuenta.descripcion && cuentaForm.controls.divisa.value == cuenta.divisa.id)" (click)="actualizarCuenta()">Actualizar cuenta</button>
-            </div>
-          </div>
-        </form>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </div>
   </mat-card-content>

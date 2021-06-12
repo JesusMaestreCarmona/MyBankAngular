@@ -6,63 +6,94 @@
     </button>      
   </mat-card-header>
   <mat-card-content>
-    <div class="row my-4">
-      <div class="col-6 d-flex justify-content-center">
-        <app-imagen-usuario [imagen]="transferencia.cuenta_origen.titular.imagen" [width]="60" [height]="60"></app-imagen-usuario>
-      </div>
-      <div class="col-6 d-flex justify-content-center">
-        <app-imagen-usuario [imagen]="transferencia.cuenta_destino.titular.imagen" [width]="60" [height]="60"></app-imagen-usuario>
-      </div>
-    </div>
-
-    <div class="row">
+    <div class="row mt-4">
       <div class="col-12">
-        <div class="row d-flex justify-content-center">
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Titular cuenta origen</mat-label>
-              <input matInput [value]="transferencia.cuenta_origen.titular.nombre + ' ' + transferencia.cuenta_origen.titular.apellido1 + ' ' + transferencia.cuenta_origen.titular.apellido2" class="text-center" [readonly]="true">
-            </mat-form-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Titular cuenta destino</mat-label>
-              <input matInput [value]="transferencia.cuenta_destino.titular.nombre + ' ' + transferencia.cuenta_destino.titular.apellido1 + ' ' + transferencia.cuenta_destino.titular.apellido2" class="text-center" [readonly]="true">
-            </mat-form-field>    
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Iban cuenta origen</mat-label>
-              <input matInput [value]="transferencia.cuenta_origen.iban" class="text-center" [readonly]="true">
-            </mat-form-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Iban cuenta destino</mat-label>
-              <input matInput [value]="transferencia.cuenta_destino.iban" class="text-center" [readonly]="true">
-            </mat-form-field>    
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Fecha</mat-label>
-              <input matInput [value]="transferencia.fecha | date:'dd/MM/yy HH:mm'" class="text-center" [readonly]="true">
-            </mat-form-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Importe</mat-label>
-              <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="transferencia.cuenta_destino.divisa.descripcion" [value]="transferencia.importe" class="text-center color-success" [readonly]="true" />
-              <mat-hint *ngIf="!transferencia.estado && transferencia.cuenta_origen.divisa.id != transferencia.cuenta_destino.divisa.id" class="font-weight-bold">
-                En {{transferencia.cuenta_origen.divisa.descripcion}}: {{importeCambioMoneda}}
-              </mat-hint>
-            </mat-form-field>    
-          </div>
-          <div *ngIf="!transferencia.estado" class="col-12 col-md-6 mt-2">
-            <button mat-raised-button color="primary" class="w-100" (click)="aceptarPeticion()" [disabled]="importeCambioMoneda > transferencia.cuenta_origen.saldo">Aceptar petición</button>
-          </div>
-          <div *ngIf="!transferencia.estado" class="col-12 col-md-6 my-2">
-            <button mat-raised-button color="warn" class="w-100" (click)="rechazarPeticion()">Rechazar petición</button>
-          </div>
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos principales
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Titular cuenta origen</mat-label>
+                    <input matInput readonly [value]="transferencia.cuenta_origen.titular.nombre + ' ' + transferencia.cuenta_origen.titular.apellido1 + ' ' + transferencia.cuenta_origen.titular.apellido2">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Iban cuenta origen</mat-label>
+                    <input matInput readonly [value]="transferencia.cuenta_origen.iban">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Titular cuenta destino</mat-label>
+                    <input matInput readonly [value]="transferencia.cuenta_destino.titular.nombre + ' ' + transferencia.cuenta_destino.titular.apellido1 + ' ' + transferencia.cuenta_destino.titular.apellido2">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Iban cuenta destino</mat-label>
+                    <input matInput readonly [value]="transferencia.cuenta_destino.iban">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Tipo</mat-label>
+                    <input matInput readonly [value]="'Transferencia'">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Importe</mat-label>
+                    <input matInput readonly mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="transferencia.cuenta_destino.divisa.descripcion" [value]="transferencia.importe" class="color-success" />
+                    <mat-hint *ngIf="!transferencia.estado && transferencia.cuenta_origen.divisa.id != transferencia.cuenta_destino.divisa.id" class="font-weight-bold">
+                      En {{transferencia.cuenta_origen.divisa.descripcion}}: {{importeCambioMoneda}}
+                    </mat-hint>
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput readonly [value]="transferencia.fecha | date:'dd/MM/yy HH:mm'">
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos secundarios
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Estado</mat-label>
+                    <input matInput readonly [value]="transferencia.estado ? 'Realizada' : 'En proceso'" class="{{transferencia.estado ? 'color-success' : 'color-info'}}">
+                    <span matPrefix class="mr-2"><mat-icon class="{{transferencia.estado ? 'color-success' : 'color-info'}}">{{transferencia.estado ? 'check_circle' : 'info'}}</mat-icon></span>
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput readonly formControlName="descripcion" class="text-justify">{{transferencia.descripcion}}</textarea>
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div *ngIf="!transferencia.estado">
+          <button mat-raised-button color="primary" class="mr-2" (click)="aceptarPeticion()" [disabled]="importeCambioMoneda > transferencia.cuenta_origen.saldo">Aceptar petición</button>
+          <button mat-raised-button color="warn" (click)="rechazarPeticion()">Rechazar petición</button>
         </div>
       </div>
     </div>

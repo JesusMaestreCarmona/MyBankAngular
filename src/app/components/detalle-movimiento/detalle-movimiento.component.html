@@ -1,0 +1,81 @@
+<mat-card class="p-0">  
+  <mat-card-header class="bg-secondary border-bottom-primary">
+    <mat-card-subtitle class="color-primary my-auto p-3">Detalle del movimiento</mat-card-subtitle>
+    <button mat-icon-button color="primary" class="my-auto ml-auto mr-3" matTooltip="Cerrar detalle" (click)="cerrarDialogo()">
+      <mat-icon>close</mat-icon>
+    </button>      
+  </mat-card-header>
+  <mat-card-content>
+    <div class="row mt-4">
+      <div class="col-12">
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos principales
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Titular</mat-label>
+                    <input matInput readonly [value]="movimiento.cuenta.titular.nombre + ' ' + movimiento.cuenta.titular.apellido1 + ' ' + movimiento.cuenta.titular.apellido2">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Iban</mat-label>
+                    <input matInput readonly [value]="movimiento.cuenta.iban">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Tipo</mat-label>
+                    <input matInput readonly [value]="movimiento.tipo">
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Importe</mat-label>
+                    <input matInput mvndrMatCurrencyFormat readonly [allowNegative]="false" [currencyCode]="movimiento.cuenta.divisa.descripcion" [value]="movimiento.importe" class="color-success" />
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-4">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput readonly [value]="movimiento.fecha | date:'dd/MM/yy HH:mm'">
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        
+          <mat-expansion-panel expanded>
+            <mat-expansion-panel-header class="border-bottom rounded-0">
+              <mat-panel-title>
+                Datos secundarios
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="pt-4">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Saldo resultante</mat-label>
+                    <input matInput mvndrMatCurrencyFormat readonly [allowNegative]="false" [currencyCode]="movimiento.cuenta.divisa.descripcion" [value]="movimiento.saldo" />
+                  </mat-form-field>    
+                </div>
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="descripcion" class="text-justify">{{movimiento.descripcion}}</textarea>
+                  </mat-form-field>    
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>          
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

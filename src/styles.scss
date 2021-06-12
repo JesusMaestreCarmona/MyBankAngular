@@ -105,19 +105,17 @@ body {
   "Helvetica Neue", sans-serif;
 }
 
+#contenedor-principal {
+  height: 100vh;
+  background: $color-secondary;
+}
+
 .row {
   margin: 0;
 }
 
 a { 
   text-decoration: none !important; 
-}
-
-#contenedor-principal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
 }
 
 #card-principal {

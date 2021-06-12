@@ -2,7 +2,7 @@
   <div class="col-12 p-0">
     
     <mat-card class="p-0">
-      <mat-card-header class="bg-secondary border-bottom-primary mb-4">
+      <mat-card-header class="bg-secondary border-bottom-primary">
         <mat-card-subtitle class="color-primary my-auto p-3">Rellena los siguientes campos para solicitar dinero</mat-card-subtitle>
         <button mat-icon-button color="primary" class="my-auto ml-auto mr-3" matTooltip="Volver a login" (click)="volverALogin()">
           <mat-icon>arrow_back</mat-icon>
@@ -11,58 +11,52 @@
       <mat-card-content>
         <mat-horizontal-stepper [linear]="true" #stepper>
           <mat-step [stepControl]="datosPrincipalesForm">
-            <form [formGroup]="datosPrincipalesForm" class="mt-4">
+            <form [formGroup]="datosPrincipalesForm" class="">
               <ng-template matStepLabel>Datos principales</ng-template>
               <div class="row">
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
+                <div class="col-12 col-md-6 p-4 border">
+                  <h4 class="color-accent">DATOS PERSONALES</h4>
+                  <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Nombre</mat-label>
                     <input matInput formControlName="nombre">
-                    <ng-container *ngIf="datosPrincipalesForm.controls.nombre.errors">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.nombre.touched && datosPrincipalesForm.controls.nombre.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.nombre.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.nombre.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                     </ng-container>
                   </mat-form-field>
-                </div>
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
+                  <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Primer apellido</mat-label>
                     <input matInput formControlName="apellido1">
-                    <ng-container *ngIf="datosPrincipalesForm.controls.apellido1.errors">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.apellido1.touched && datosPrincipalesForm.controls.apellido1.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.apellido1.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.apellido1.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                     </ng-container>
                   </mat-form-field>
-                </div>
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
+                  <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Segundo apellido</mat-label>
                     <input matInput formControlName="apellido2">
-                    <ng-container *ngIf="datosPrincipalesForm.controls.apellido2.errors">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.apellido2.touched && datosPrincipalesForm.controls.apellido2.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.apellido2.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.apellido2.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                     </ng-container>
                   </mat-form-field>
                 </div>
-              </div>
-              <div class="row d-flex justify-content-center">
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
+                <div class="col-12 col-md-6 p-4 border">
+                  <h4 class="color-accent">DATOS PARA LOGIN</h4>
+                  <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email">
-                    <ng-container *ngIf="datosPrincipalesForm.controls.email.errors">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.email.touched && datosPrincipalesForm.controls.email.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.maxlength"><small>El límite de carácteres es de 40</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.pattern"><small>Dirección de correo no válida</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.email.errors.emailExiste"><small>Ya hay un usuario registrado con este email</small></div>  
                     </ng-container>
                   </mat-form-field>
-                </div>
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
+                  <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" [type]="mostrarPassword ? 'password' : 'text'">
-                    <ng-container *ngIf="datosPrincipalesForm.controls.password.errors">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.password.touched && datosPrincipalesForm.controls.password.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
@@ -73,101 +67,104 @@
                   </mat-form-field>
                 </div>
               </div>
-              <mat-divider></mat-divider>
-              <div class="mt-4 d-flex">
+              <div class="m-4 d-flex">
                 <button mat-stroked-button [disabled]="datosPrincipalesForm.invalid" color="primary" class="ml-auto" matStepperNext>Siguiente</button>
               </div>
             </form>
           </mat-step>
           <mat-step [stepControl]="datosSecundariosForm">
-            <form [formGroup]="datosSecundariosForm" class="mt-4">
+            <form [formGroup]="datosSecundariosForm">
               <ng-template matStepLabel>Datos secundarios</ng-template>
               <div class="row">
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Telefono</mat-label>
-                    <input matInput formControlName="telefono">
-                    <ng-container *ngIf="datosSecundariosForm.controls.telefono.errors">
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.telefono.errors.required"><small>Campo requerido</small></div>
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.telefono.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                    </ng-container>
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Dirección</mat-label>
-                    <input matInput formControlName="direccion">
-                    <ng-container *ngIf="datosSecundariosForm.controls.direccion.errors">
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.direccion.errors.required"><small>Campo requerido</small></div>
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                    </ng-container>
-                  </mat-form-field>
-                </div>
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Localidad</mat-label>
-                    <input matInput formControlName="localidad">
-                    <ng-container *ngIf="datosSecundariosForm.controls.localidad.errors">
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.localidad.errors.required"><small>Campo requerido</small></div>
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                    </ng-container>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row d-flex justify-content-center">
-                <div class="col-12 col-md-4">        
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Codigo postal</mat-label>
-                    <input matInput formControlName="codigo_postal">
-                    <ng-container *ngIf="datosSecundariosForm.controls.codigo_postal.errors">
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                    </ng-container>
-                  </mat-form-field>
-                </div>   
-                <div class="col-12 col-md-4">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Estado</mat-label>
-                    <input matInput formControlName="estado">
-                    <ng-container *ngIf="datosSecundariosForm.controls.estado.errors">
-                      <div class="color-warn" *ngIf="datosSecundariosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                    </ng-container>
-                  </mat-form-field>
+                <div class="col-12 p-4 border">
+                  <h4 class="color-accent">DATOS SECUNDARIOS</h4>
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Telefono</mat-label>
+                        <input matInput formControlName="telefono">
+                        <ng-container *ngIf="datosSecundariosForm.controls.telefono.touched && datosSecundariosForm.controls.telefono.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.telefono.errors.required"><small>Campo requerido</small></div>
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.telefono.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput formControlName="direccion">
+                        <ng-container *ngIf="datosSecundariosForm.controls.direccion.touched && datosSecundariosForm.controls.direccion.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.direccion.errors.required"><small>Campo requerido</small></div>
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Localidad</mat-label>
+                        <input matInput formControlName="localidad">
+                        <ng-container *ngIf="datosSecundariosForm.controls.localidad.touched && datosSecundariosForm.controls.localidad.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.localidad.errors.required"><small>Campo requerido</small></div>
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                        </ng-container>
+                      </mat-form-field>    
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Codigo postal</mat-label>
+                        <input matInput formControlName="codigo_postal">
+                        <ng-container *ngIf="datosSecundariosForm.controls.codigo_postal.touched && datosSecundariosForm.controls.codigo_postal.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Estado</mat-label>
+                        <input matInput formControlName="estado">
+                        <ng-container *ngIf="datosSecundariosForm.controls.estado.touched && datosSecundariosForm.controls.estado.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <mat-divider></mat-divider>
-              <div class="mt-4 d-flex">
+              <div class="m-4 d-flex">
                 <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
                 <button mat-stroked-button [disabled]="datosSecundariosForm.invalid" color="primary" matStepperNext>Siguiente</button>
               </div>
             </form>
           </mat-step>
           <mat-step [stepControl]="datosCuentaForm">
-            <form [formGroup]="datosCuentaForm" class="mt-4">
+            <form [formGroup]="datosCuentaForm">
               <ng-template matStepLabel>Datos cuenta</ng-template>
-              <div class="row d-flex justify-content-center">
-                <div class="col-5 col-md-3">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Divisa</mat-label>
-                    <mat-select formControlName="divisa">
-                      <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
-                        {{divisa.descripcion}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+              <div class="row">
+                <div class="col-12 p-4 border">
+                  <h4 class="color-accent">DATOS PARA CUENTA</h4>
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Divisa</mat-label>
+                        <mat-select formControlName="divisa">
+                          <mat-option *ngFor="let divisa of divisas" [value]="divisa.id">
+                            {{divisa.descripcion}}
+                          </mat-option>
+                        </mat-select>
+                        <ng-container *ngIf="datosCuentaForm.controls.divisa.touched && datosCuentaForm.controls.divisa.errors">
+                          <div class="color-warn" *ngIf="datosCuentaForm.controls.divisa.errors.required"><small>Campo requerido</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field appearance="legacy" class="w-100" *ngIf="datosCuentaForm.controls.descripcion.value != null">
+                        <mat-label>Descripción</mat-label>
+                        <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="datosCuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="datosCuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
+                        <textarea matInput formControlName="descripcion" class="text-justify"></textarea>
+                        <ng-container *ngIf="datosCuentaForm.controls.descripcion.touched && datosCuentaForm.controls.descripcion.errors">
+                          <div class="color-warn" *ngIf="datosCuentaForm.controls.descripcion.errors.required"><small>Campo requerido</small></div>
+                          <div class="color-warn" *ngIf="datosCuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
+                        </ng-container>
+                      </mat-form-field>
+                    </div>
+                  </div>   
                 </div>
-                <div class="col-11 col-md-7">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Descripción</mat-label>
-                    <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="datosCuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="datosCuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
-                    <textarea matInput formControlName="descripcion" class="text-justify"></textarea>
-                    <ng-container *ngIf="datosCuentaForm.controls.descripcion.errors">
-                      <div class="color-warn" *ngIf="datosCuentaForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
-                    </ng-container>
-                  </mat-form-field>    
-                </div>    
               </div>
-              <mat-divider></mat-divider>
-              <div class="mt-4 d-flex">
+              <div class="m-4 d-flex">
                 <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
                 <button mat-stroked-button [disabled]="datosCuentaForm.invalid" color="primary" matStepperNext>Siguiente</button>
               </div>
@@ -175,28 +172,38 @@
           </mat-step>
           <mat-step optional>
             <ng-template matStepLabel>Imagen de perfil</ng-template>
-            <div class="d-flex justify-content-center my-4">
-              <button mat-button (click)="fileInput.click()" matTooltip="Click sobre la imagen para cambiarla"> 
-                <app-imagen-usuario [imagen]="imagenActual" [width]="100" [height]="100"></app-imagen-usuario>
-              </button>
-              <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
+            <div class="row">
+              <div class="col-12 p-4 border">
+                <h4 class="color-accent m-0">IMAGEN USUARIO</h4>
+                <div class="row h-100">
+                  <div class="col-12 d-flex justify-content-center">
+                    <div class="d-flex align-content-center">
+                      <button mat-button (click)="fileInput.click()" class="my-auto" matTooltip="Click sobre la imagen para cambiarla"> 
+                        <app-imagen-usuario [imagen]="imagenActual" [width]="100" [height]="100"></app-imagen-usuario>
+                      </button>
+                      <input hidden (change)="usuarioSeleccionaFicheroImagen()" #fileInput type="file" id="file">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <p class="text-center mt-2">Click sobre la imagen para cambiarla</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="text-center mb-4">
-              <p>Clic sobre la imagen para cambiarla</p>
-              <mat-divider></mat-divider>
-            </div>
-            <div class="mt-4 d-flex">
+            <div class="m-4 d-flex">
               <button mat-stroked-button matStepperPrevious class="ml-auto mr-2">Volver</button>
               <button mat-stroked-button color="primary" matStepperNext>Siguiente</button>
-            </div>  
+            </div>
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>Completado!</ng-template>
-            <div class="mt-4">
-              <p>Has terminado el proceso de registro. Haga click en confirmar.</p>
+            <div class="row">
+              <div class="col-12 p-4 border">
+                <p class="m-0">Has terminado el proceso de registro. Haga click en confirmar.</p>
+              </div>
             </div>
-            <div class="mt-4">
-              <button mat-stroked-button matStepperPrevious>Volver</button>
+            <div class="m-4 d-flex">
+              <button mat-stroked-button matStepperPrevious class="ml-auto">Volver</button>
               <button mat-stroked-button color="warn" class="mx-2" (click)="stepper.reset()">Comenzar de nuevo</button>
               <button mat-stroked-button color="primary" (click)="registrarUsuario()">Confirmar</button>
             </div>

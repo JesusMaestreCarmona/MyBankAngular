@@ -41,6 +41,7 @@ export class ModificarDatosUsuarioComponent implements OnInit {
       nombre: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       apellido1: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       apellido2: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
+      password: new FormControl ('', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
       telefono: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       direccion: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       localidad: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
@@ -113,7 +114,7 @@ export class ModificarDatosUsuarioComponent implements OnInit {
         this.comunicacionDeAlertasService.cerrarDialogo();
         if (data['result'] == 'ok')
           this.comunicacionDeAlertasService.abrirDialogInfo('Datos actualizados con éxito').subscribe(result => {
-            this.router.navigate(['/portal']);
+            this.router.navigate(['/listado-transferencias']);
           });
         else
           this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al actualizar los datos del usuario');
