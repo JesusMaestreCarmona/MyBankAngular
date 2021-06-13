@@ -15,3 +15,23 @@ mat-chip {
 ::ng-deep .mat-menu-content{
     padding:0px !important;
 }
+
+::ng-deep .mat-snack-bar-container{
+    color: $color-primary !important;
+    background-color: $color-secondary !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+::ng-deep .mat-simple-snackbar-action {
+    display: none !important;
+}
+
+::ng-deep .mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+::ng-deep .mat-standard-chip {
+    border-radius: 10px !important;
+}

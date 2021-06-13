@@ -5,7 +5,7 @@
       <mat-card-header class="bg-secondary border-bottom-primary">
         <mat-card-subtitle class="color-primary my-auto p-3">Formulario para la modificación de datos</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content *ngIf="datosForm != undefined">
+      <mat-card-content *ngIf="datosForm != undefined && usuarioAutenticado != undefined">
         <form [formGroup]="datosForm">
           <div class="row">
             <div class="col-12 col-md-6 col-lg-4 p-4 border">
@@ -34,22 +34,41 @@
                   <div class="color-warn" *ngIf="datosForm.controls.apellido2.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
               </mat-form-field>    
-              <mat-form-field appearance="legacy" class="w-100" matTooltip="El email no puede ser modificado">
+              <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Email</mat-label>
                 <input matInput disabled [value]="usuarioAutenticado.email">
+                <mat-hint>* El email no puede ser modificado</mat-hint>
+              </mat-form-field>  
+              <h4 class="color-accent mt-4">MODIFICACIÓN DE CONTRASEÑA</h4>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Contraseña actual</mat-label>
+                <input matInput formControlName="currentPassword">
+                <ng-container *ngIf="datosForm.controls.currentPassword.touched && datosForm.controls.currentPassword.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.currentPassword.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.currentPassword.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.currentPassword.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.currentPassword.errors.errorCurrentPassword"><small>La contraseña introducida no coincide con la actual</small></div>
+                </ng-container>    
               </mat-form-field>    
               <mat-form-field appearance="legacy" class="w-100">
-                <mat-label>Contraseña</mat-label>
-                <input matInput formControlName="password">
-                <ng-container *ngIf="datosForm.controls.password.touched && datosForm.controls.password.errors">
-                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.required"><small>Campo requerido</small></div>
-                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
-                  <div class="color-warn" *ngIf="datosForm.controls.password.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                </ng-container>    
+                <mat-label>Nueva contraseña</mat-label>
+                <input matInput formControlName="newPassword">
+                <ng-container *ngIf="datosForm.controls.newPassword.touched && datosForm.controls.newPassword.errors">
+                  <div class="color-warn" *ngIf="datosForm.controls.newPassword.errors.required"><small>Campo requerido</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.newPassword.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
+                  <div class="color-warn" *ngIf="datosForm.controls.newPassword.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                </ng-container> 
+                <mat-hint>* Introduce la contraseña actual para crear una nueva</mat-hint>   
               </mat-form-field>    
             </div>
             <div class="col-12 col-md-6 col-lg-4 p-4 border">
               <h4 class="color-accent">DATOS SECUNDARIOS</h4>
+              <mat-form-field appearance="legacy" class="w-100">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="fecha_nac">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
               <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Telefono</mat-label>
                 <input matInput formControlName="telefono">
@@ -85,14 +104,6 @@
                   <div class="color-warn" *ngIf="datosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                 </ng-container>    
               </mat-form-field>
-              <mat-form-field appearance="legacy" class="w-100">
-                <mat-label>Estado</mat-label>
-                <input matInput formControlName="estado">
-                <mat-icon matSuffix>people</mat-icon>
-                <ng-container *ngIf="datosForm.controls.estado.errors">
-                  <div class="color-warn" *ngIf="datosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                </ng-container>    
-              </mat-form-field>
             </div>
             <div class="col-12 col-md-6 col-lg-4 p-4 border">
               <h4 class="color-accent m-0">IMAGEN USUARIO</h4>
@@ -113,9 +124,9 @@
           </div>
         </form>    
       </mat-card-content>
-      <mat-card-actions class="d-flex mx-0">
+      <mat-card-actions class="d-flex mx-0 mb-4">
         <button mat-stroked-button [disabled]="datosForm.invalid" (click)="actualizarDatosUsuario()" color="primary" class="ml-auto">Modificar</button>
-        <button mat-stroked-button color="warn" (click)="cargarDatosUsuarioEnFormulario()">Reiniciar</button>
+        <button mat-stroked-button color="warn" (click)="inicializarformulario()">Reiniciar</button>
       </mat-card-actions>
     </mat-card>
   </div>

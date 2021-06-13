@@ -40,7 +40,9 @@ export class UsuarioService {
     );
   }
 
-  actualizarDatosUsuario(imagen: string, nombre: string, apellido1: string, apellido2: string, telefono: string, direccion: string, localidad: string, codigo_postal: string, estado: string): Observable<string> {
+  actualizarDatosUsuario(imagen: string, nombre: string, apellido1: string, apellido2: string, telefono: string, direccion: string, localidad: string, codigo_postal: string, estado: string, newPassword: string): Observable<string> {
+    const md5 = new Md5();
+    let password = newPassword != '' ? md5.appendStr(newPassword).end().toString() : '';
     var jsonObject = {
       'imagen': imagen,
       'nombre': nombre,
@@ -50,7 +52,8 @@ export class UsuarioService {
       'direccion': direccion,
       'localidad': localidad,
       'codigo_postal': codigo_postal,
-      'estado': estado
+      'estado': estado,
+      'password': password
     };
     return this.http.put<string>('/usuario/actualizarDatosUsuario', jsonObject).pipe(
       tap(data => {
@@ -59,8 +62,9 @@ export class UsuarioService {
     );
   }
 
-  registrarUsuario(imagen: string, nombre: string, apellido1: string, apellido2: string, email: string, password: string, telefono: string, direccion: string, localidad: string, codigo_postal: string, estado: string): Observable<string> {
+  registrarUsuario(imagen: string, nombre: string, apellido1: string, apellido2: string, email: string, password: string, fecha_nac: Date, telefono: string, direccion: string, localidad: string, codigo_postal: string, estado: string): Observable<string> {
     const md5 = new Md5();
+    console.log(fecha_nac);
     var jsonObject = {
       'imagen': imagen,
       'nombre': nombre,
@@ -68,6 +72,7 @@ export class UsuarioService {
       'apellido2': apellido2,
       'email': email,
       'password': md5.appendStr(password).end().toString(),
+      'fecha_nac': fecha_nac,
       'telefono': telefono,
       'direccion': direccion,
       'localidad': localidad,

@@ -2,41 +2,35 @@
   <div class="col-12 p-0">
     
     <mat-card class="p-0" *ngIf="movimientoForm != undefined">
-      <mat-card-header class="bg-secondary border-bottom-primary mb-4">
+      <mat-card-header class="bg-secondary border-bottom-primary">
         <mat-card-subtitle class="color-primary my-auto p-3">Rellena los siguientes campos para realizar el movimiento</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content class="mx-4">
+      <mat-card-content>
         <form [formGroup]="movimientoForm">
-          <div class="row">
-            <div class="col-5 col-md-3 col-lg-2">
-              <mat-form-field appearance="legacy" class="w-100">
+          <div class="row d-flex justify-content-center border-bottom">
+            <div class="col-12 col-md-6 p-4">
+              <h4 class="color-accent">DATOS PARA MOVIMIENTO</h4>
+              <mat-form-field appearance="legacy" class="w-50">
                 <mat-label>Tipo movimiento</mat-label>
                 <mat-select formControlName="tipo" (selectionChange)="comprobarTipoMovimiento()">
                   <mat-option *ngFor="let tipo of tiposMovimiento" [value]="tipo">
                     {{tipo}}
                   </mat-option>
                 </mat-select>
-                <ng-container *ngIf="movimientoForm.controls.tipo.errors">
+                <ng-container *ngIf="movimientoForm.controls.tipo.touched && movimientoForm.controls.tipo.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.tipo.errors.required"><small>Campo requerido</small></div>
                 </ng-container>
               </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-md-7 col-lg-6" *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'">        
-              <mat-form-field appearance="legacy" class="w-100">
+              <mat-form-field *ngIf="movimientoForm.controls.tipo.value == 'Solicitar dinero' || movimientoForm.controls.tipo.value == 'Enviar dinero'" appearance="legacy" class="w-100">
                 <mat-label>Iban</mat-label>
                 <input matInput formControlName="iban">
                 <ng-container *ngIf="movimientoForm.controls.iban.touched && movimientoForm.controls.iban.errors">
                   <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.required"><small>Campo requerido</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                   <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.pattern"><small>Este campo solo puede contener números y letras</small></div>
+                  <div class="color-warn" *ngIf="movimientoForm.controls.iban.errors.ibanNoEncontrado"><small>El iban introducido no existe</small></div>
                 </ng-container>
               </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-md-7 col-lg-6">
               <mat-form-field appearance="legacy" class="w-100">
                 <mat-label>Descripción</mat-label>
                 <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="movimientoForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="movimientoForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>
@@ -46,11 +40,7 @@
                   <div class="color-warn" *ngIf="movimientoForm.controls.descripcion.errors.maxlength"><small>El límite de carácteres es de 200</small></div>
                 </ng-container>
               </mat-form-field>    
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-5 col-md-3 col-lg-2">
-              <mat-form-field appearance="legacy" class="w-100">
+              <mat-form-field appearance="legacy" class="w-50">
                 <mat-label>Importe</mat-label>
                 <input matInput mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuentaActual.divisa.descripcion" formControlName="importe" />
                 <ng-container *ngIf="movimientoForm.controls.importe.touched && movimientoForm.controls.importe.errors">
@@ -63,7 +53,6 @@
           </div>
         </form>
       </mat-card-content>
-      <mat-divider></mat-divider>
       <mat-card-actions class="d-flex mx-0 my-4">
         <button mat-stroked-button [disabled]="movimientoForm.invalid" (click)="realizarMovimiento()" color="primary" class="ml-auto">{{movimientoForm.controls.tipo.value}}</button>
         <button mat-stroked-button color="warn" (click)="crearFormularioReactivo()">Reiniciar</button>

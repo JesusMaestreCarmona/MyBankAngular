@@ -70,6 +70,10 @@ export class ListadoPeticionesComponent implements OnInit {
       const end = (page + 1) * pageSize;
       return `${start} - ${end} de ${length}`;
     };
+    document.querySelector('.mat-paginator-navigation-first').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-previous').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-next').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-last').classList.add('mat-primary');
   }
 
   getCuenta(id: number) {
@@ -107,7 +111,8 @@ export class ListadoPeticionesComponent implements OnInit {
 
   seleccionarTransferencia(transferencia: Transferencia) {
     const dialogRef = this.dialog.open(DetalleTransferenciaComponent, {
-      width: '70%',
+      width: '80%',
+      height: '80%',
       data: transferencia,
     });
 

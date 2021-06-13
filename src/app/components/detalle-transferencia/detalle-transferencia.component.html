@@ -51,7 +51,7 @@
                   <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Importe</mat-label>
                     <input matInput readonly mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="transferencia.cuenta_destino.divisa.descripcion" [value]="transferencia.importe" class="color-success" />
-                    <mat-hint *ngIf="!transferencia.estado && transferencia.cuenta_origen.divisa.id != transferencia.cuenta_destino.divisa.id" class="font-weight-bold">
+                    <mat-hint *ngIf="!transferencia.estado && transferencia.cuenta_origen.divisa.id != transferencia.cuenta_destino.divisa.id" class="color-warn">
                       En {{transferencia.cuenta_origen.divisa.descripcion}}: {{importeCambioMoneda}}
                     </mat-hint>
                   </mat-form-field>    
@@ -77,7 +77,7 @@
                 <div class="col-12 col-md-6">
                   <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Estado</mat-label>
-                    <input matInput readonly [value]="transferencia.estado ? 'Realizada' : 'En proceso'" class="{{transferencia.estado ? 'color-success' : 'color-info'}}">
+                    <input matInput readonly [value]="transferencia.estado ? 'Realizada' : 'En espera'" class="{{transferencia.estado ? 'color-success' : 'color-info'}}">
                     <span matPrefix class="mr-2"><mat-icon class="{{transferencia.estado ? 'color-success' : 'color-info'}}">{{transferencia.estado ? 'check_circle' : 'info'}}</mat-icon></span>
                   </mat-form-field>    
                 </div>
@@ -91,7 +91,7 @@
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-        <div *ngIf="!transferencia.estado">
+        <div *ngIf="!transferencia.estado" class="mt-4">
           <button mat-raised-button color="primary" class="mr-2" (click)="aceptarPeticion()" [disabled]="importeCambioMoneda > transferencia.cuenta_origen.saldo">Aceptar petición</button>
           <button mat-raised-button color="warn" (click)="rechazarPeticion()">Rechazar petición</button>
         </div>

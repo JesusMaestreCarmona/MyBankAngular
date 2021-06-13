@@ -64,21 +64,3 @@ td {
 .mat-paginator {
   background-color: $color-secondary;
 }
-
-::ng-deep .mat-snack-bar-container{
-  color: black !important;
-  background-color: $color-secondary !important;
-}
-
-::ng-deep .mat-simple-snackbar-action {
-  color: $color-primary;
-}
-
-::ng-deep .mat-sort-header-container {
-  display: flex;
-  justify-content: center;
-}
-
-::ng-deep .mat-standard-chip {
-  border-radius: 10px !important;
-}

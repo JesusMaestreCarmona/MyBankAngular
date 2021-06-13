@@ -7,8 +7,8 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row mt-4">
-      <button mat-raised-button color="primary" class="mb-2 ml-auto" [disabled]="idCuentaActual == cuenta.id" (click)="seleccionarCuenta()">{{idCuentaActual == cuenta.id ? 'Esta cuenta es la actual' : 'Seleccionar cuenta'}}</button>
-      <div class="col-12">
+      <button mat-raised-button color="primary" class="mb-4 ml-auto" [disabled]="idCuentaActual == cuenta.id" (click)="seleccionarCuenta()">{{idCuentaActual == cuenta.id ? 'Esta cuenta es la actual' : 'Seleccionar cuenta'}}</button>
+      <div class="col-12 border-top pt-4">
         <mat-accordion class="example-headers-align" multi>
           <mat-expansion-panel expanded>
             <mat-expansion-panel-header class="border-bottom rounded-0">
@@ -30,11 +30,11 @@
                     <input matInput readonly [value]="cuenta.iban">
                   </mat-form-field>    
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 col-lg-4">
                   <mat-form-field appearance="legacy" class="w-100">
                     <mat-label>Saldo</mat-label>
                     <input matInput readonly mvndrMatCurrencyFormat [allowNegative]="false" [currencyCode]="cuenta.divisa.descripcion" [value]="cuenta.saldo" class="color-success" />
-                  </mat-form-field>    
+                  </mat-form-field> 
                 </div>
               </div>
             </div>
@@ -49,7 +49,7 @@
             <div class="pt-4">
               <form [formGroup]="cuentaForm">
                 <div class="row">
-                  <div class="col-12 col-md-6">
+                  <div class="col-12 col-md-6 col-lg-4">
                     <mat-form-field appearance="legacy" class="w-100">
                       <mat-label>Divisa</mat-label>
                       <mat-select formControlName="divisa" (selectionChange)="seleccionarDivisa()">
@@ -57,9 +57,10 @@
                           {{divisa.descripcion}}
                         </mat-option>
                       </mat-select>
+                      <mat-hint *ngIf="cuentaForm.controls.divisa.value != cuenta.divisa.id" class="color-warn">El saldo pasaría a ser: {{saldoCambioMoneda}} {{nuevaDivisa.descripcion}}</mat-hint>
                     </mat-form-field>    
                   </div>
-                  <div class="col-12 col-md-6">
+                  <div class="col-12 col-md-10 col-lg-8">
                     <mat-form-field appearance="legacy" class="w-100">
                       <mat-label>Descripción</mat-label>
                       <mat-spinner matSuffix class="ml-2" [mode]="'determinate'" [value]="cuentaForm.controls.descripcion.value.length / 2" [diameter]="15" [color]="cuentaForm.controls.descripcion.value.length > 200 ? 'warn' : 'primary'"></mat-spinner>

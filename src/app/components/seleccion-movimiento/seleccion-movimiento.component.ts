@@ -79,18 +79,18 @@ export class SeleccionMovimientoComponent implements OnInit {
 
   crearFormularioReactivo() {
     this.movimientoForm = new FormGroup({
-      tipo: new FormControl ('Solicitar dinero', [Validators.required]),
-      iban: new FormControl ('', [Validators.required, Validators.maxLength(50), Validators.pattern(/[a-zA-Z0-9]+/)]),
+      tipo: new FormControl ('', [Validators.required]),
+      iban: new FormControl ('', [Validators.required, Validators.maxLength(50), Validators.pattern(/[a-zA-Z0-9]+/)], [this.comprobarSiExisteIban()]),
       descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)]),
       importe: new FormControl (0, [Validators.required, Validators.min(0.01)]),
     });
   }
 
-  comprobarSiExisteEmail(): AsyncValidatorFn {
+  comprobarSiExisteIban(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.cuentaService.buscarIban(control.value).pipe(
         map(data => {
-          return (data['ibanEncontrado'] == true)? null : { ibanEncontrado: true };
+          return (data['ibanEncontrado'] == true)? null : { ibanNoEncontrado: true };
         })
       );
     };
@@ -113,11 +113,14 @@ export class SeleccionMovimientoComponent implements OnInit {
 
   comprobarTipoMovimiento() {
     let importeValidators = [Validators.required, Validators.min(0)];
-    if (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Solicitar dinero') {
-      importeValidators = [Validators.required, Validators.min(0), Validators.max(6)];
+    if (this.movimientoForm.controls.tipo.value === 'Enviar dinero' || this.movimientoForm.controls.tipo.value === 'Retirar dinero') {
+      importeValidators.push(Validators.max(this.cuentaActual.saldo));
     }
-    this.movimientoForm.controls.iban.setErrors(null);
+    if (this.movimientoForm.controls.tipo.value !== 'Enviar dinero' && this.movimientoForm.controls.tipo.value !== 'Solicitar dinero') {
+      this.movimientoForm.controls.iban.setErrors(null);
+    }
     this.movimientoForm.controls.importe.setValidators(importeValidators);
+    this.movimientoForm.controls.importe.updateValueAndValidity();
   }
 
 }

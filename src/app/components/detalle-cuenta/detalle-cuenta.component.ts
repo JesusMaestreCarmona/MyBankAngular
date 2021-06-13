@@ -32,7 +32,7 @@ export class DetalleCuentaComponent implements OnInit {
     
     this.divisaService.getAllDivisas().subscribe(data => {
       if (data['result'] == 'ok') this.divisas = data['divisas'];
-      else this.dialogRef.close(); 
+      else this.cerrarDialogo(); 
     });
 
     this.cuentaForm = new FormGroup({
@@ -44,6 +44,8 @@ export class DetalleCuentaComponent implements OnInit {
   seleccionarCuenta() {
     this.cuentaService.emitirNuevoCambioEnCuentaActual(this.cuenta);
     this.cuentaService.almacenaCuentaActual(this.cuenta.id);
+    this.cerrarDialogo();
+    this.comunicacionDeAlertasService.mostrarMensajesSnackbar(['Cuenta seleccionada con éxito'], '', 1000);
   }
 
   actualizarCuenta() {
@@ -57,22 +59,20 @@ export class DetalleCuentaComponent implements OnInit {
         mensaje = 'Cuenta actualizada con éxito';
         this.cuentaService.emitirNuevoCambioEnCuentaActual(data['cuentaActualizada']);
       }
-      this.comunicacionDeAlertasService.abrirDialogInfo(mensaje).subscribe(() => {
-        this.dialogRef.close(); 
-      });
+      this.cerrarDialogo();
+      this.comunicacionDeAlertasService.mostrarMensajesSnackbar([mensaje], '', 1000);
     });
   }
 
   seleccionarDivisa() {
-    this.nuevaDivisa = this.divisas.filter(divisa => divisa.id == this.cuentaForm.controls.divisa.value);
-    this.divisaService.getCambioMoneda(this.cuenta.divisa.descripcion, this.nuevaDivisa[0]['descripcion']).subscribe(data => {
-      if (data['result'] == 'ok') {
+    this.nuevaDivisa = this.divisas.filter(divisa => divisa.id == this.cuentaForm.controls.divisa.value)[0];
+    this.divisaService.getCambioMoneda(this.cuenta.divisa.descripcion, this.nuevaDivisa['descripcion']).subscribe(data => {
+      if (data['result'] == 'ok')
         this.saldoCambioMoneda = parseFloat(data['cambioMoneda']) * this.cuenta.saldo;
+      else {
+        this.cerrarDialogo();
+        this.comunicacionDeAlertasService.mostrarMensajesSnackbar(['Ha habido un problema al cambiar de divisa'], '', 1000);
       }
-      else 
-        this.comunicacionDeAlertasService.abrirDialogInfo('Ha habido un problema al cambiar de divisa').subscribe(() => {
-          this.dialogRef.close();
-        });
     });
   }
 

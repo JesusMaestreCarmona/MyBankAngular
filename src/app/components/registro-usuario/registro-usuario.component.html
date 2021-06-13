@@ -10,7 +10,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-horizontal-stepper [linear]="true" #stepper>
-          <mat-step [stepControl]="datosPrincipalesForm">
+          <mat-step [stepControl]="datosPrincipalesForm" optional>
             <form [formGroup]="datosPrincipalesForm" class="">
               <ng-template matStepLabel>Datos principales</ng-template>
               <div class="row">
@@ -72,7 +72,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="datosSecundariosForm">
+          <mat-step [stepControl]="datosSecundariosForm" optional>
             <form [formGroup]="datosSecundariosForm">
               <ng-template matStepLabel>Datos secundarios</ng-template>
               <div class="row">
@@ -80,6 +80,16 @@
                   <h4 class="color-accent">DATOS SECUNDARIOS</h4>
                   <div class="row">
                     <div class="col-6">
+                      <mat-form-field appearance="legacy" class="w-100">
+                        <mat-label>Fecha de nacimiento</mat-label>
+                        <input matInput [max]="maxDate" [matDatepicker]="picker" formControlName="fecha_nac">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <ng-container *ngIf="datosSecundariosForm.controls.fecha_nac.touched && datosSecundariosForm.controls.fecha_nac.errors">
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.fecha_nac.errors.required"><small>Inserte una fecha válida</small></div>
+                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.fecha_nac.errors.fechaMayorActual"><small>La fecha seleccionada es mayor que la actual</small></div>
+                        </ng-container> 
+                      </mat-form-field>        
                       <mat-form-field appearance="legacy" class="w-100">
                         <mat-label>Telefono</mat-label>
                         <input matInput formControlName="telefono">
@@ -96,6 +106,8 @@
                           <div class="color-warn" *ngIf="datosSecundariosForm.controls.direccion.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                         </ng-container>
                       </mat-form-field>
+                    </div>
+                    <div class="col-6">
                       <mat-form-field appearance="legacy" class="w-100">
                         <mat-label>Localidad</mat-label>
                         <input matInput formControlName="localidad">
@@ -104,8 +116,6 @@
                           <div class="color-warn" *ngIf="datosSecundariosForm.controls.localidad.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                         </ng-container>
                       </mat-form-field>    
-                    </div>
-                    <div class="col-6">
                       <mat-form-field appearance="legacy" class="w-100">
                         <mat-label>Codigo postal</mat-label>
                         <input matInput formControlName="codigo_postal">
@@ -130,7 +140,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="datosCuentaForm">
+          <mat-step [stepControl]="datosCuentaForm" optional>
             <form [formGroup]="datosCuentaForm">
               <ng-template matStepLabel>Datos cuenta</ng-template>
               <div class="row">

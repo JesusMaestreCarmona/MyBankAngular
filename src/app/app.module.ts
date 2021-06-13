@@ -47,6 +47,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // Other components
 import { MatCurrencyFormatModule } from 'mat-currency-format';
@@ -97,10 +98,11 @@ import { MatCurrencyFormatModule } from 'mat-currency-format';
     MatBadgeModule,
     MatSelectModule,
     MatStepperModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDatepickerModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],
+              {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,6 +7,7 @@ export interface Usuario {
     password: string;
     rol_id: number;
     imagen: string;
+    fecha_nac: Date;
     telefono: string;
     direccion: string;
     localidad: string;

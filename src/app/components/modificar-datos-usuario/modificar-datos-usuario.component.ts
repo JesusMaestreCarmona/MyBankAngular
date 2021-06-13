@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/interfaces';
 import { ComunicacionDeAlertasService } from 'src/app/services/comunicacion-de-alertas.service';
 import { CuentaService } from 'src/app/services/cuenta.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Md5 } from 'ts-md5';
 
 @Component({
   selector: 'app-modificar-datos-usuario',
@@ -33,7 +34,7 @@ export class ModificarDatosUsuarioComponent implements OnInit {
         this.usuarioAutenticado = usuario;
         let idCuentaActual = this.cuentaService.recuperaCuentaActual();
         this.getCuenta(idCuentaActual != undefined ? parseInt(idCuentaActual) : -1);
-        this.cargarDatosUsuarioEnFormulario();
+        this.inicializarformulario();
         this.comunicacionDeAlertasService.cerrarDialogo();
       }
     });
@@ -41,7 +42,9 @@ export class ModificarDatosUsuarioComponent implements OnInit {
       nombre: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       apellido1: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       apellido2: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
-      password: new FormControl ('', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
+      currentPassword: new FormControl ('', []),
+      newPassword: new FormControl ('', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
+      fecha_nac: new FormControl(''),
       telefono: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       direccion: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       localidad: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
@@ -63,16 +66,38 @@ export class ModificarDatosUsuarioComponent implements OnInit {
     });    
   }
 
-  cargarDatosUsuarioEnFormulario() {
+  inicializarformulario() {
     this.datosForm.controls.nombre.setValue(this.usuarioAutenticado.nombre);
     this.datosForm.controls.apellido1.setValue(this.usuarioAutenticado.apellido1);
     this.datosForm.controls.apellido2.setValue(this.usuarioAutenticado.apellido2);
+    this.datosForm.controls.fecha_nac.setValue(new Date(this.usuarioAutenticado.fecha_nac));
     this.datosForm.controls.telefono.setValue(this.usuarioAutenticado.telefono);
     this.datosForm.controls.direccion.setValue(this.usuarioAutenticado.direccion);
     this.datosForm.controls.localidad.setValue(this.usuarioAutenticado.localidad);
     this.datosForm.controls.codigo_postal.setValue(this.usuarioAutenticado.codigo_postal);
     this.datosForm.controls.estado.setValue(this.usuarioAutenticado.estado);
+
+    this.datosForm.controls.currentPassword.setValidators([this.comprobarCurrentPassword(this.usuarioAutenticado.password)]);
+    this.datosForm.controls.newPassword.disable();
+    this.datosForm.controls.fecha_nac.disable();
   }
+
+  comprobarCurrentPassword(currentPassword): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const md5 = new Md5();
+      let error = null;
+      if (control.value !== '') {
+        error = md5.appendStr(control.value).end().toString() != currentPassword ? { errorCurrentPassword: true } : null;
+        if (error == null) 
+          this.datosForm.controls.newPassword.enable() 
+        else {
+          this.datosForm.controls.newPassword.disable();
+          this.datosForm.controls.newPassword.setValue('');
+        }
+      }
+      return error;
+    };
+  }    
 
   usuarioSeleccionaFicheroImagen() {
     const inputNode: any = document.querySelector('#file');
@@ -80,7 +105,7 @@ export class ModificarDatosUsuarioComponent implements OnInit {
     const ext = file.name.split('.').pop().toLowerCase;
 
     let validExtension = (ext === 'jpg' || ext === 'jpeg' || ext === 'png') ? true : false;
-
+    
     if (validExtension) { 
       const reader = new FileReader(); 
 
@@ -110,6 +135,7 @@ export class ModificarDatosUsuarioComponent implements OnInit {
       this.datosForm.controls.localidad.value, 
       this.datosForm.controls.codigo_postal.value, 
       this.datosForm.controls.estado.value, 
+      this.datosForm.controls.newPassword.value, 
       ).subscribe(data => {
         this.comunicacionDeAlertasService.cerrarDialogo();
         if (data['result'] == 'ok')

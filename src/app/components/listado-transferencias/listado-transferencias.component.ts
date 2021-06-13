@@ -50,6 +50,7 @@ export class ListadoTransferenciasComponent implements OnInit {
         this.usuarioAutenticado = usuario;
         let cuentaActual = this.cuentaService.recuperaCuentaActual();
         let idCuentaActual = (cuentaActual != undefined) ? parseInt(cuentaActual) : -1;
+        console.log(idCuentaActual);
         this.getCuenta(idCuentaActual);
         this.configuraEtiquetasDelPaginador();    
       }
@@ -124,11 +125,9 @@ export class ListadoTransferenciasComponent implements OnInit {
       let peticionesANotificar = data['peticiones'];
       let mensajesAMostrar = [];
       peticionesANotificar.forEach(peticion => {
-        mensajesAMostrar.push(`Ha recibido una petición de ${peticion.cuenta_destino.titular.nombre} ${peticion.cuenta_destino.titular.apellido1} 
-        ${peticion.cuenta_destino.titular.apellido2}`);
+        mensajesAMostrar.push(`Ha recibido una petición de ${peticion.cuenta_destino.titular.nombre} ${peticion.cuenta_destino.titular.apellido1} ${peticion.cuenta_destino.titular.apellido2}`);
       });
-      let accion = 'Listado peticiones';
-      this.comunicacionDeAlertasService.mostrarMensajesSnackbar(mensajesAMostrar, accion, 3000);
+      this.comunicacionDeAlertasService.mostrarMensajesSnackbar(mensajesAMostrar, '', 3000);
     });
   }
 

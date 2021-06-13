@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class RegistroUsuarioComponent implements OnInit {
   imagenActual: string;
   divisas: Divisa[];
   mostrarPassword: boolean = true;
+  maxDate: Date;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -37,6 +38,10 @@ export class RegistroUsuarioComponent implements OnInit {
     this.divisaService.getAllDivisas().subscribe(data => {
       if (data['result'] == 'ok') { 
         this.divisas = data['divisas'];
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
+        const currentDay = new Date().getDate();
+        this.maxDate = new Date(currentYear - 18, currentMonth, currentDay);    
         this.crearFormulariosReactivos();
       };
     });
@@ -52,6 +57,7 @@ export class RegistroUsuarioComponent implements OnInit {
     });
 
     this.datosSecundariosForm = new FormGroup({
+      fecha_nac: new FormControl ('', [Validators.required]),
       telefono: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       direccion: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       localidad: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
@@ -83,6 +89,7 @@ export class RegistroUsuarioComponent implements OnInit {
       this.datosPrincipalesForm.controls.apellido2.value,
       this.datosPrincipalesForm.controls.email.value,
       this.datosPrincipalesForm.controls.password.value,
+      this.datosSecundariosForm.controls.fecha_nac.value.getTime(),
       this.datosSecundariosForm.controls.telefono.value,
       this.datosSecundariosForm.controls.direccion.value,
       this.datosSecundariosForm.controls.localidad.value,

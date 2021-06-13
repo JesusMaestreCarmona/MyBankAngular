@@ -70,6 +70,10 @@ export class ListadoMovimientosComponent implements OnInit {
       const end = (page + 1) * pageSize;
       return `${start} - ${end} de ${length}`;
     };
+    document.querySelector('.mat-paginator-navigation-first').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-previous').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-next').classList.add('mat-primary');
+    document.querySelector('.mat-paginator-navigation-last').classList.add('mat-primary');
   }
 
   getCuenta(id: number) {
