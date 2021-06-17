@@ -142,7 +142,7 @@ export class RegistroUsuarioComponent implements OnInit {
   usuarioSeleccionaFicheroImagen() {
     const inputNode: any = document.querySelector('#file');
     const file = inputNode.files[0];
-    const ext = file.name.split('.').pop().toLowerCase;
+    const ext = file.name.split('.').pop().toLowerCase();
 
     let validExtension = (ext === 'jpg' || ext === 'jpeg' || ext === 'png') ? true : false;
 

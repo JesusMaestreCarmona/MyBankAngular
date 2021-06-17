@@ -1,11 +1,8 @@
-// Una interface para definir el tipo de datos que puedo pasar a un dialogo
 export interface DialogDataType {
-    tipoDialogo: number,  // Será uno de los de "DialogTypes" un poco más abajo
+    tipoDialogo: number,
     texto: string
 }
 
-// Clase con "constantes" que utilizaremos para especificar un tipo de diálogo o
-// un botón pulsado dentro del mismo.
 export class DialogTypes {
     public static readonly ESPERANDO = 1;
     public static readonly ERROR = 2;

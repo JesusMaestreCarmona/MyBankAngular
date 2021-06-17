@@ -18,12 +18,11 @@ import {Location} from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
   
-  usuarioAutenticado: Usuario; // Guardo el usuario autenticado
+  usuarioAutenticado: Usuario;
   cuentaActual: Cuenta;
   cuentasDelUsuario: Cuenta[];
   totalPeticiones: number = 0;
   
-  // Necesito varios objetos inyectados en este componente
   constructor(
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
     private autenticadorJWT: AutenticadorJwtService,
@@ -75,17 +74,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  /**
-   * El logo de la barra de herramientas nos llevará al listado de mensajes
-   */
   navegarHaciaPrincipal() {
     if (this.usuarioAutenticado != null) this.router.navigate(['/listado-transferencias']);
     else this.location.back();
   }
   
-  /**
-   * Confirmación de que deseamos abandonar la sesión
-   */
   dialogoAbandonarSesion() {
     this.comunicacionDeAlertasService.abrirDialogConfirmacion ('¿Realmente desea abandonar la sesión?').subscribe(opcionElegida => {
       if (opcionElegida == DialogTypes.RESPUESTA_ACEPTAR) {
