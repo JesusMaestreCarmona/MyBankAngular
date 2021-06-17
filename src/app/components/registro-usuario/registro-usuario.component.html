@@ -10,7 +10,7 @@
       </mat-card-header>
       <mat-card-content>
         <mat-horizontal-stepper [linear]="true" #stepper>
-          <mat-step [stepControl]="datosPrincipalesForm" optional>
+          <mat-step [stepControl]="datosPrincipalesForm">
             <form [formGroup]="datosPrincipalesForm" class="">
               <ng-template matStepLabel>Datos principales</ng-template>
               <div class="row">
@@ -54,12 +54,23 @@
                     </ng-container>
                   </mat-form-field>
                   <mat-form-field appearance="legacy" class="w-100">
-                    <mat-label>Password</mat-label>
+                    <mat-label>Contraseña</mat-label>
                     <input matInput formControlName="password" [type]="mostrarPassword ? 'password' : 'text'">
                     <ng-container *ngIf="datosPrincipalesForm.controls.password.touched && datosPrincipalesForm.controls.password.errors">
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.required"><small>Campo requerido</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.minlength"><small>El mínimo de carácteres es de 8</small></div>
                       <div class="color-warn" *ngIf="datosPrincipalesForm.controls.password.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
+                    </ng-container>
+                    <button mat-icon-button matSuffix (click)="mostrarPassword = !mostrarPassword">
+                      <mat-icon>{{mostrarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <mat-form-field appearance="legacy" class="w-100">
+                    <mat-label>Confirmar contraseña</mat-label>
+                    <input matInput formControlName="confirmPassword" [type]="mostrarPassword ? 'password' : 'text'">
+                    <ng-container *ngIf="datosPrincipalesForm.controls.confirmPassword.touched && datosPrincipalesForm.controls.confirmPassword.errors">
+                      <div class="color-warn" *ngIf="datosPrincipalesForm.controls.confirmPassword.errors.required"><small>Campo requerido</small></div>
+                      <div class="color-warn" *ngIf="datosPrincipalesForm.controls.confirmPassword.errors.errorConfirmacionPassword"><small>Las contraseñas no coinciden</small></div>
                     </ng-container>
                     <button mat-icon-button matSuffix (click)="mostrarPassword = !mostrarPassword">
                       <mat-icon>{{mostrarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -72,7 +83,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="datosSecundariosForm" optional>
+          <mat-step [stepControl]="datosSecundariosForm">
             <form [formGroup]="datosSecundariosForm">
               <ng-template matStepLabel>Datos secundarios</ng-template>
               <div class="row">
@@ -123,13 +134,6 @@
                           <div class="color-warn" *ngIf="datosSecundariosForm.controls.codigo_postal.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
                         </ng-container>
                       </mat-form-field>
-                      <mat-form-field appearance="legacy" class="w-100">
-                        <mat-label>Estado</mat-label>
-                        <input matInput formControlName="estado">
-                        <ng-container *ngIf="datosSecundariosForm.controls.estado.touched && datosSecundariosForm.controls.estado.errors">
-                          <div class="color-warn" *ngIf="datosSecundariosForm.controls.estado.errors.maxlength"><small>El límite de carácteres es de 50</small></div>
-                        </ng-container>
-                      </mat-form-field>
                     </div>
                   </div>
                 </div>
@@ -140,7 +144,7 @@
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="datosCuentaForm" optional>
+          <mat-step [stepControl]="datosCuentaForm">
             <form [formGroup]="datosCuentaForm">
               <ng-template matStepLabel>Datos cuenta</ng-template>
               <div class="row">

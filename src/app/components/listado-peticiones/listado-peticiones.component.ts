@@ -92,7 +92,7 @@ export class ListadoPeticionesComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(pagina, elementosPorPagina) {
+  actualizarHistorial(pagina, elementosPorPagina, filtros = []) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
     this.transferenciaService.getPeticionesCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
@@ -100,6 +100,12 @@ export class ListadoPeticionesComponent implements OnInit {
         this.peticiones.lista = data['peticiones'];
         this.peticiones.totalPeticiones = data['totalPeticiones'];
         if (this.peticiones.totalPeticiones != 0) {
+          filtros.forEach(filtro => {
+            if (filtro.name !== 'fecha')
+              this.peticiones.lista = this.peticiones.lista.filter(peticion => peticion[filtro.name] === filtro.value);
+            else
+              this.peticiones.lista = this.peticiones.lista.filter(peticion => new Date(peticion[filtro.name]).toLocaleDateString() === filtro.value);
+          });      
           this.dataSourceTabla = new MatTableDataSource<Transferencia>(this.peticiones.lista);
           this.dataSourceTabla.sort = this.sort;
         }
@@ -119,6 +125,10 @@ export class ListadoPeticionesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.actualizarHistorial(0, 10);
     });
+  }
+
+  nuevaPeticion() {
+    this.router.navigate(['/seleccion-movimiento'], { queryParams: { tipo: 'peticion' } });
   }
 
 }

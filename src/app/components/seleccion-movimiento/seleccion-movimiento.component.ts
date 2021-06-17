@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cuenta, Divisa, Usuario } from 'src/app/interfaces/interfaces';
@@ -25,6 +25,7 @@ export class SeleccionMovimientoComponent implements OnInit {
     lista: [],
     totalMovimientos: 0
   }
+  parametroTipo = '';
 
   constructor(
     private router: Router,
@@ -32,7 +33,8 @@ export class SeleccionMovimientoComponent implements OnInit {
     private cuentaService: CuentaService,
     private movimientoService: MovimientoService,
     private comunicacionDeAlertasService: ComunicacionDeAlertasService,
-    private autenticadorJWT: AutenticadorJwtService
+    private autenticadorJWT: AutenticadorJwtService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,7 @@ export class SeleccionMovimientoComponent implements OnInit {
       }
       else {
         this.usuarioAutenticado = usuario;
+        this.comprobarParametroTipo();
         let idCuentaActual = this.cuentaService.recuperaCuentaActual();
         this.getCuenta(idCuentaActual != undefined ? parseInt(idCuentaActual) : -1);
         this.comunicacionDeAlertasService.cerrarDialogo();
@@ -51,6 +54,15 @@ export class SeleccionMovimientoComponent implements OnInit {
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
       this.cuentaActual = nuevaCuentaActual;
       if (this.movimientoForm != undefined) this.crearFormularioReactivo();
+    });
+  }
+
+  comprobarParametroTipo() {
+    this.route.queryParams.subscribe(params => {
+      if (params['tipo'] != undefined) {
+        if (params['tipo'] === 'transferencia') this.parametroTipo = 'Enviar dinero';
+        if (params['tipo'] === 'peticion') this.parametroTipo = 'Solicitar dinero';
+      }
     });
   }
 
@@ -79,7 +91,7 @@ export class SeleccionMovimientoComponent implements OnInit {
 
   crearFormularioReactivo() {
     this.movimientoForm = new FormGroup({
-      tipo: new FormControl ('', [Validators.required]),
+      tipo: new FormControl (this.parametroTipo, [Validators.required]),
       iban: new FormControl ('', [Validators.required, Validators.maxLength(50), Validators.pattern(/[a-zA-Z0-9]+/)], [this.comprobarSiExisteIban()]),
       descripcion: new FormControl ('', [Validators.required, Validators.maxLength(200)]),
       importe: new FormControl (0, [Validators.required, Validators.min(0.01)]),
@@ -97,6 +109,7 @@ export class SeleccionMovimientoComponent implements OnInit {
   }
 
   realizarMovimiento() {
+    this.comunicacionDeAlertasService.abrirDialogCargando();
     this.movimientoService.realizarMovimiento(
       this.cuentaActual.id,
       this.movimientoForm.controls.tipo.value,
@@ -104,6 +117,7 @@ export class SeleccionMovimientoComponent implements OnInit {
       this.movimientoForm.controls.descripcion.value,
       this.movimientoForm.controls.importe.value,
     ).subscribe(data => {
+      this.comunicacionDeAlertasService.cerrarDialogo();
       let mensaje = (data['result'] == 'ok') ? 'Movimiento realizado con éxito' : 'Ha habido un problema al realizar el movimiento'
       this.comunicacionDeAlertasService.abrirDialogInfo(mensaje).subscribe(result => {
         this.router.navigate(['/listado-transferencias']);

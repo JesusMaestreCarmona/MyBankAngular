@@ -9,10 +9,9 @@ import { AutenticadorJwtService } from './autenticador-jwt.service';
 })
 
 export class HttpInterceptorService implements HttpInterceptor {
-  urlWebAPI = 'http://localhost:8080';
+  urlWebAPI = 'http://jesusmaestre.iesmarquesdecomares.org/mybank';
 
   constructor( private autenticadorJwt: AutenticadorJwtService) { }
-
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
@@ -37,7 +36,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         return event;
       }),
       finalize(() => {
-       })
-      );
+      })
+    );
   }
 }

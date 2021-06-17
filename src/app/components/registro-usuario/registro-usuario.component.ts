@@ -54,7 +54,9 @@ export class RegistroUsuarioComponent implements OnInit {
       apellido2: new FormControl ('', [Validators.required, Validators.maxLength(50)]),
       email: new FormControl ('', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)], [this.comprobarSiExisteEmail()]),
       password: new FormControl ('', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]),
+      confirmPassword: new FormControl (''),
     });
+    this.datosPrincipalesForm.controls.confirmPassword.setValidators([Validators.required, this.comprobarConfirmacionPassword()]);
 
     this.datosSecundariosForm = new FormGroup({
       fecha_nac: new FormControl ('', [Validators.required]),
@@ -81,7 +83,18 @@ export class RegistroUsuarioComponent implements OnInit {
     };
   }
 
+  comprobarConfirmacionPassword(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      let error = null;
+      if (control.value !== '') {
+        error = control.value != this.datosPrincipalesForm.controls.password.value ? { errorConfirmacionPassword: true } : null;
+      }
+      return error;
+    };
+  }    
+
   registrarUsuario() {
+    this.comunicacionDeAlertasService.abrirDialogCargando();
     this.usuarioService.registrarUsuario(
       this.imagenActual,
       this.datosPrincipalesForm.controls.nombre.value,
@@ -96,6 +109,7 @@ export class RegistroUsuarioComponent implements OnInit {
       this.datosSecundariosForm.controls.codigo_postal.value,
       this.datosSecundariosForm.controls.estado.value,
     ).subscribe(data => {
+      this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
         this.usuarioService.autenticarUsuario(this.datosPrincipalesForm.controls.email.value, this.datosPrincipalesForm.controls.password.value).subscribe(data => {
           this.autenticadorJwtService.almacenaJWT(data.jwt); // Almaceno un nuevo JWT

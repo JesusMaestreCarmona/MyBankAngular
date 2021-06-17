@@ -50,7 +50,6 @@ export class ListadoTransferenciasComponent implements OnInit {
         this.usuarioAutenticado = usuario;
         let cuentaActual = this.cuentaService.recuperaCuentaActual();
         let idCuentaActual = (cuentaActual != undefined) ? parseInt(cuentaActual) : -1;
-        console.log(idCuentaActual);
         this.getCuenta(idCuentaActual);
         this.configuraEtiquetasDelPaginador();    
       }
@@ -101,7 +100,7 @@ export class ListadoTransferenciasComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(pagina: number, elementosPorPagina: number) {
+  actualizarHistorial(pagina: number, elementosPorPagina: number, filtros = []) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
     this.transferenciaService.getTransferenciasCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
@@ -109,6 +108,12 @@ export class ListadoTransferenciasComponent implements OnInit {
         this.transferencias.lista = data['transferencias'];
         this.transferencias.totalTransferencias = data['totalTransferencias'];
         if (this.transferencias.totalTransferencias != 0) {
+          filtros.forEach(filtro => {
+            if (filtro.name !== 'fecha')
+              this.transferencias.lista = this.transferencias.lista.filter(transferencia => transferencia[filtro.name] === filtro.value);
+            else
+              this.transferencias.lista = this.transferencias.lista.filter(transferencia => new Date(transferencia[filtro.name]).toLocaleDateString() === filtro.value);
+          });      
           this.dataSourceTabla = new MatTableDataSource<Transferencia>(this.transferencias.lista);
           this.dataSourceTabla.sort = this.sort;
         }
@@ -141,6 +146,10 @@ export class ListadoTransferenciasComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.actualizarHistorial(0, 10);
     });
+  }
+
+  nuevaTransferencia() {
+    this.router.navigate(['/seleccion-movimiento'], { queryParams: { tipo: 'transferencia' } });
   }
 
 }

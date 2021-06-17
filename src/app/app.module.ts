@@ -48,9 +48,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 // Other components
 import { MatCurrencyFormatModule } from 'mat-currency-format';
+import { FiltroListadosComponent } from './components/filtro-listados/filtro-listados.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,7 @@ import { MatCurrencyFormatModule } from 'mat-currency-format';
     ListadoMovimientosComponent,
     DetalleMovimientoComponent,
     ListadoTransferenciasComponent,
+    FiltroListadosComponent,
   ],
   imports: [
     BrowserModule,
@@ -99,7 +103,9 @@ import { MatCurrencyFormatModule } from 'mat-currency-format';
     MatSelectModule,
     MatStepperModule,
     MatExpansionModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSidenavModule,
+    MatButtonToggleModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
               {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],

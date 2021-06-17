@@ -40,14 +40,7 @@ export class HeaderComponent implements OnInit {
     this.usuarioService.cambiosEnUsuarioAutenticado.subscribe(nuevoUsuarioAutenticado => {
       this.usuarioAutenticado = nuevoUsuarioAutenticado;
       if (this.usuarioAutenticado != null) {
-        this.cuentaService.getAllCuentasUsuario().subscribe(data => {
-          if (data['result'] == 'ok') {
-            let cuentas = data['cuentas'];
-            if (cuentas.length) this.cuentasDelUsuario = cuentas;
-          }
-          else 
-            this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar la cuenta');
-        });
+        this.getAllCuentasUsuario()
       }  
     });
     this.cuentaService.cambiosEnCuentaActual.subscribe(nuevaCuentaActual => {
@@ -59,14 +52,18 @@ export class HeaderComponent implements OnInit {
           }
         });        
       }
-      this.cuentaService.getAllCuentasUsuario().subscribe(data => {
-        if (data['result'] == 'ok') {
-          let cuentas = data['cuentas'];
-          if (cuentas.length) this.cuentasDelUsuario = cuentas;
-        }
-        else 
-          this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar la cuenta');
-      });
+      this.getAllCuentasUsuario()
+    });
+  }
+
+  getAllCuentasUsuario() {
+    this.cuentaService.getAllCuentasUsuario().subscribe(data => {
+      if (data['result'] == 'ok') {
+        let cuentas = data['cuentas'];
+        if (cuentas.length) this.cuentasDelUsuario = cuentas;
+      }
+      else 
+        this.comunicacionDeAlertasService.abrirDialogError('Ha habido un problema al cargar las cuentas del usuario');
     });
   }
 
@@ -84,7 +81,7 @@ export class HeaderComponent implements OnInit {
   navegarHaciaPrincipal() {
     if (this.usuarioAutenticado != null) this.router.navigate(['/listado-transferencias']);
     else this.location.back();
-  } 
+  }
   
   /**
    * Confirmación de que deseamos abandonar la sesión

@@ -11,8 +11,8 @@ mat-card {
 
 @media only screen and (max-width: 768px) {
 
-  .mt-5 {
-    margin-top: 0 !important;
+  #contenedor-principal, #contenedor-login {
+    height: 100vh !important;
   }
 
   button, a {

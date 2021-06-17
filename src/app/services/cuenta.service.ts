@@ -2,7 +2,6 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Cuenta } from '../interfaces/interfaces';
 import { Observable } from 'rxjs';
-import { Md5 } from 'ts-md5';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +14,12 @@ export class CuentaService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCuentasUsuario (): Observable<Cuenta> {
-    return this.http.get<Cuenta>('/cuenta/all');
+  getAllCuentasUsuario (): Observable<string> {
+    return this.http.get<string>('/cuenta/all');
   }
 
-  getCuentaUsuario (id: number): Observable<Cuenta> {
-    return this.http.get<Cuenta>('/cuenta/findById?id=' + id);
+  getCuentaUsuario (id: number): Observable<string> {
+    return this.http.get<string>('/cuenta/findById?id=' + id);
   }
 
   buscarIban (iban: string): Observable<string> {

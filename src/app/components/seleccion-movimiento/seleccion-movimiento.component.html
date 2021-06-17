@@ -54,7 +54,7 @@
         </form>
       </mat-card-content>
       <mat-card-actions class="d-flex mx-0 my-4">
-        <button mat-stroked-button [disabled]="movimientoForm.invalid" (click)="realizarMovimiento()" color="primary" class="ml-auto">{{movimientoForm.controls.tipo.value}}</button>
+        <button mat-stroked-button [disabled]="movimientoForm.invalid" (click)="realizarMovimiento()" color="primary" class="ml-auto">{{movimientoForm.controls.tipo.value != '' ? movimientoForm.controls.tipo.value : 'Selecciona un tipo'}}</button>
         <button mat-stroked-button color="warn" (click)="crearFormularioReactivo()">Reiniciar</button>
       </mat-card-actions>
     </mat-card>

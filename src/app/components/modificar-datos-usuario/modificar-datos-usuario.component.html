@@ -39,8 +39,7 @@
                 <input matInput disabled [value]="usuarioAutenticado.email">
                 <mat-hint>* El email no puede ser modificado</mat-hint>
               </mat-form-field>  
-              <h4 class="color-accent mt-4">MODIFICACIÓN DE CONTRASEÑA</h4>
-              <mat-form-field appearance="legacy" class="w-100">
+              <mat-form-field appearance="legacy" class="w-100 mt-2">
                 <mat-label>Contraseña actual</mat-label>
                 <input matInput formControlName="currentPassword">
                 <ng-container *ngIf="datosForm.controls.currentPassword.touched && datosForm.controls.currentPassword.errors">

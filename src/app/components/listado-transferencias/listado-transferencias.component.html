@@ -1,78 +1,96 @@
-<ng-container *ngIf="transferencias != undefined">
-  <div class="row d-flex justify-content-center">
-    <div id="card-principal" class="col-12 p-0">
-      
-      <div class="row bg-secondary border-bottom-primary">
-        <div class="col-8 py-2">
-          <h3 class="my-auto font-weight-bold color-primary">TRANSFERENCIAS REALIZADAS</h3>
-          <p class="m-0">Historial de transferencias de la cuenta actual</p>
-        </div>
-        <div class="col-4 d-flex align-items-center justify-content-end">
-          <button mat-raised-button color="primary" class="ml-2 mr-3" (click)="actualizarHistorial(0, 10)">
-            <mat-icon>refresh</mat-icon> 
-            <span class="d-none d-md-inline">Refrescar</span>
-          </button>  
+<mat-drawer-container autosize [hasBackdrop]="false">
+  <mat-drawer #drawer class="p-4 panel-filtro bg-secondary" mode="over">
+    <app-filtro-listados (ocultarFiltro)="drawer.toggle()" (filtrosSeleccionados)="actualizarHistorial(0, 10, $event)"></app-filtro-listados>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <ng-container *ngIf="transferencias != undefined">
+      <div class="row d-flex justify-content-center">
+        <div id="card-principal" class="col-12 p-0">
+          
+          <div class="row bg-secondary border-bottom-primary">
+            <div class="col py-2 d-flex justify-content-center d-sm-block">
+              <h3 class="my-auto font-weight-bold color-primary">TRANSFERENCIAS REALIZADAS</h3>
+              <p class="m-0 d-none d-sm-block">Historial de transferencias de la cuenta actual</p>
+            </div>
+            <div class="col d-flex align-items-center justify-content-end my-2">
+              <mat-button-toggle-group>
+                <mat-button-toggle class="color-primary" (click)="nuevaTransferencia()" matTooltip="Nueva transferencia">
+                  <mat-icon>payment</mat-icon> 
+                  <span class="d-none d-md-inline">Nueva transferencia</span>  
+                </mat-button-toggle>
+                <mat-button-toggle class="color-primary" (click)="drawer.toggle()" matTooltip="Mostrar filtro">
+                  <mat-icon>filter_list</mat-icon> 
+                  <span class="d-none d-md-inline">Mostrar filtro</span>
+                </mat-button-toggle>
+                <mat-button-toggle class="color-primary" (click)="actualizarHistorial(0, 10)" matTooltip="Refrescar">
+                  <mat-icon>refresh</mat-icon> 
+                  <span class="d-none d-md-inline">Refrescar</span>  
+                </mat-button-toggle>
+              </mat-button-toggle-group>            
+            </div>
+          </div>
+
+          <div class="row contenedorTabla d-flex justify-content-center">
+            <div class="col-12 p-0" *ngIf="transferencias.lista.length != 0; else elseBlock">
+              <table mat-table [dataSource]="dataSourceTabla" matSort matSortDisableClear matSortDirection="desc">
+                <ng-container matColumnDef="destinatario">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let row" class="pr-5">
+                    {{(row.cuenta_origen.id == cuentaActual.id)
+                        ? 'Para: ' + row.cuenta_destino.titular.nombre + ' ' + row.cuenta_destino.titular.apellido1 + ' ' + row.cuenta_destino.titular.apellido2
+                        : 'De: ' + row.cuenta_origen.titular.nombre + ' ' + row.cuenta_origen.titular.apellido1 + ' ' + row.cuenta_origen.titular.apellido2}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="descripcion">
+                  <th mat-header-cell *matHeaderCellDef class="ocultar-columna">Descripción</th>
+                  <td mat-cell *matCellDef="let row" class="pr-5 ocultar-columna">
+                    {{row.descripcion}}
+                  </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="importe">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Importe</th>
+                  <td mat-cell *matCellDef="let row">      
+                    <mat-chip-list class="d-flex justify-content-center">
+                      <mat-chip color="accent" selected>
+                        {{row.importe | currency: row.cuenta_origen.divisa.descripcion}}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Fecha</th>
+                  <td mat-cell *matCellDef="let row">
+                    <span class="d-flex align-items-center justify-content-center">
+                      <mat-icon class="color-primary mr-2 d-none d-sm-block">date_range</mat-icon>
+                      {{row.fecha | date:'dd/MM/yy HH:mm'}}
+                    </span>
+                  </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="nombresDeColumnas; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: nombresDeColumnas;" class="element-row" (click)="seleccionarTransferencia(row)"></tr>
+
+              </table>
+            </div>
+            <ng-template #elseBlock>
+              <p class="d-flex align-items-center my-auto"><mat-icon class="color-primary mr-2">error</mat-icon> Actualmente no hay registros</p>
+            </ng-template>
+          </div>
+
+          <div class="row">
+            <div class="col-12 bg-secondary">
+              <mat-paginator [length]="transferencias.totalTransferencias" [pageIndex]="0" [pageSize]="10" [hidePageSize]="true"
+                [pageSizeOptions]="[5, 10, 25, 100]" (page)="actualizarHistorial($event.pageIndex, $event.pageSize)" [showFirstLastButtons]="true">
+              </mat-paginator>
+            </div>
+          </div>
+
         </div>
       </div>
-
-      <div class="row contenedorTabla d-flex justify-content-center">
-        <div class="col-12 p-0" *ngIf="transferencias.lista.length != 0; else elseBlock">
-          <table mat-table [dataSource]="dataSourceTabla" matSort matSortDisableClear matSortDirection="desc">
-            <ng-container matColumnDef="destinatario">
-              <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let row" class="pr-5">
-                {{(row.cuenta_origen.id == cuentaActual.id)
-                    ? 'Para: ' + row.cuenta_destino.titular.nombre + ' ' + row.cuenta_destino.titular.apellido1 + ' ' + row.cuenta_destino.titular.apellido2
-                    : 'De: ' + row.cuenta_origen.titular.nombre + ' ' + row.cuenta_origen.titular.apellido1 + ' ' + row.cuenta_origen.titular.apellido2}}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="descripcion">
-              <th mat-header-cell *matHeaderCellDef class="ocultar-columna">Descripción</th>
-              <td mat-cell *matCellDef="let row" class="pr-5 ocultar-columna">
-                {{row.descripcion}}
-              </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="importe">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Importe</th>
-              <td mat-cell *matCellDef="let row">      
-                <mat-chip-list class="d-flex justify-content-center">
-                  <mat-chip color="accent" selected>
-                    {{row.importe | currency: row.cuenta_origen.divisa.descripcion}}
-                  </mat-chip>
-                </mat-chip-list>
-              </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Fecha</th>
-              <td mat-cell *matCellDef="let row">
-                <span class="d-flex align-items-center justify-content-center">
-                  <mat-icon class="color-primary mr-2">date_range</mat-icon>
-                  {{row.fecha | date:'dd/MM/yy HH:mm'}}
-                </span>
-              </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="nombresDeColumnas; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: nombresDeColumnas;" class="element-row" (click)="seleccionarTransferencia(row)"></tr>
-
-          </table>
-        </div>
-        <ng-template #elseBlock>
-          <p class="d-flex align-items-center my-auto"><mat-icon class="color-primary mr-2">error</mat-icon> Actualmente no hay registros</p>
-        </ng-template>
-      </div>
-
-      <div class="row">
-        <div class="col-12 bg-secondary">
-          <mat-paginator [length]="transferencias.totalTransferencias" [pageIndex]="0" [pageSize]="10" [hidePageSize]="true"
-            [pageSizeOptions]="[5, 10, 25, 100]" (page)="actualizarHistorial($event.pageIndex, $event.pageSize)" [showFirstLastButtons]="true">
-          </mat-paginator>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</ng-container> 
+    </ng-container> 
+  </mat-drawer-content>
+</mat-drawer-container>

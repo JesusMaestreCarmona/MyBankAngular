@@ -1,9 +1,10 @@
 <mat-toolbar color="primary" class="shadow" *ngIf="location.path() !== '/login'">
   <mat-toolbar-row>
     <button mat-button color="primary" (click)="navegarHaciaPrincipal()">
-      <div class="marca border-bottom-secondary d-flex align-items-center">
-        <mat-icon class="logo mr-1">account_balance</mat-icon>
-        <span class="color-secondary">MY BANK</span>
+      <div class="marca border-bottom-secondary d-flex align-items-center justify-content-center p-1">
+        <mat-icon class="logo">account_balance</mat-icon>
+        <span class="color-secondary ml-1 d-none d-sm-block">MY BANK</span>
+        <span class="color-secondary ml-1 d-block d-sm-none">MB</span>
       </div>
     </button>
 
@@ -29,9 +30,9 @@
       </div>
     </mat-menu> 
 
-    <button *ngIf="usuarioAutenticado != null" mat-button [matMenuTriggerFor]="menuImagenUsuario" matTooltip="{{usuarioAutenticado.nombre + ' ' + usuarioAutenticado.apellido1 + ' ' + usuarioAutenticado.apellido2}}">
-      <app-imagen-usuario [imagen]="usuarioAutenticado.imagen" [width]="40" [height]="40"></app-imagen-usuario>
-    </button> 
+    <button *ngIf="usuarioAutenticado != null" mat-icon-button color="primary" class="color-secondary" [matMenuTriggerFor]="menuImagenUsuario">
+      <mat-icon>menu</mat-icon>
+    </button>
     <mat-menu #menuImagenUsuario="matMenu">
       <button mat-menu-item (click)="navegarAListadoDeTransferencias()">
         <mat-icon class="color-primary">history</mat-icon>

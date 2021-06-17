@@ -92,7 +92,7 @@ export class ListadoMovimientosComponent implements OnInit {
     });    
   }
 
-  actualizarHistorial(pagina, elementosPorPagina) {
+  actualizarHistorial(pagina, elementosPorPagina, filtros = []) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
     this.movimientoService.getMovimientosCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
@@ -100,6 +100,12 @@ export class ListadoMovimientosComponent implements OnInit {
         this.movimientos.lista = data['movimientos'];
         this.movimientos.totalMovimientos = data['totalMovimientos'];
         if (this.movimientos.totalMovimientos != 0) {
+          filtros.forEach(filtro => {
+            if (filtro.name !== 'fecha')
+              this.movimientos.lista = this.movimientos.lista.filter(movimiento => movimiento[filtro.name] === filtro.value);
+            else
+              this.movimientos.lista = this.movimientos.lista.filter(movimiento => new Date(movimiento[filtro.name]).toLocaleDateString() === filtro.value);
+          });      
           this.dataSourceTabla = new MatTableDataSource<Movimiento>(this.movimientos.lista);
           this.dataSourceTabla.sort = this.sort;
         }
@@ -119,6 +125,10 @@ export class ListadoMovimientosComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.actualizarHistorial(0, 10);
     });
+  }
+
+  nuevoMovimiento() {
+    this.router.navigate(['/seleccion-movimiento']);
   }
 
 }

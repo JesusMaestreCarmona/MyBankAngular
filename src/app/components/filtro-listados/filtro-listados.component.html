@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-12">
+    <mat-toolbar class="bg-secondary">
+      <small class="color-accent">PANEL FILTROS</small>
+
+      <span class="spacer"></span>
+
+      <button mat-icon-button color="primary" (click)="emitirOcultarFiltro()">
+        <mat-icon>close</mat-icon>
+      </button>  
+    </mat-toolbar>    
+    <mat-divider></mat-divider>
+    <form [formGroup]="filterForm" class="mt-4">
+      <mat-form-field appearance="legacy" class="w-100">
+        <mat-label>Importe</mat-label>
+        <input matInput type="number" formControlName="importe" />
+      </mat-form-field>
+      <mat-form-field appearance="legacy" class="w-100">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div class="mt-4 d-flex">
+        <button mat-stroked-button [disabled]="filterForm.controls.importe.value == null && filterForm.controls.fecha.value == ''" (click)="filtrar()" color="primary" class="ml-auto mr-2">Filtrar</button>
+        <button mat-stroked-button [disabled]="filtros.length == 0" color="warn" (click)="reiniciarFiltros()">Reiniciar filtros</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,16 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-// Para personalizar los colores de Angular Material podemos utilizar uno de los 4 siguientes
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-//@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
-//@import "~@angular/material/prebuilt-themes/purple-green.css";
-
-
-// O también podemos personalizar los estilos a través de los colores: primary, accent, warn...
-// Para elegir paletas gráficas recomiendo visitar http://mcg.mbitson.com y elegir
-// "Angular JS 2 (Material 2)" .  Más info en https://material.angular.io/guide/theming
-
 @import "~@angular/material/theming";
 
 @include mat-core();
@@ -81,8 +68,8 @@ $md-mcgpalette1: (
     )
 );
 
-$theming-material-components-primary: mat-palette($md-mcgpalette0);
-$theming-material-components-accent: mat-palette($md-mcgpalette1);
+$theming-material-components-primary: mat-palette($md-mcgpalette0); // Añadimos los colores que queramos
+$theming-material-components-accent: mat-palette($md-mcgpalette1); // Añadimos los colores que queramos
 $theming-material-components-warn: mat-palette($mat-red);
 $theming-material-components-info: mat-palette($mat-yellow);
 
