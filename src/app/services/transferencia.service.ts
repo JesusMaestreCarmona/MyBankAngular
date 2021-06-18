@@ -9,12 +9,24 @@ export class TransferenciaService {
 
   constructor(private http: HttpClient) { }
 
-  getTransferenciasCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number) : Observable<string> {
-    return this.http.get<string>('/transferencia/getAllTransferenciasPaginacion?idCuenta=' + idCuenta + '&pagina=' + pagina + '&elementosPorPagina=' + elementosPorPagina);
+  getTransferenciasCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number, filtros: any[] = []) : Observable<string> {
+    var jsonObject = {
+      'idCuenta': idCuenta,
+      'pagina': pagina,
+      'elementosPorPagina': elementosPorPagina,
+      'filtros': filtros
+    };
+    return this.http.post<string>('/transferencia/getAllTransferenciasPaginacion', jsonObject);
   }
 
-  getPeticionesCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number) : Observable<string> {
-    return this.http.get<string>('/transferencia/getAllPeticionesPaginacion?idCuenta=' + idCuenta + '&pagina=' + pagina + '&elementosPorPagina=' + elementosPorPagina);
+  getPeticionesCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number, filtros: any[] = []) : Observable<string> {
+    var jsonObject = {
+      'idCuenta': idCuenta,
+      'pagina': pagina,
+      'elementosPorPagina': elementosPorPagina,
+      'filtros': filtros
+    };
+    return this.http.post<string>('/transferencia/getAllPeticionesPaginacion', jsonObject);
   }
 
   getPeticionesANotificar(idCuenta: number) : Observable<string> {

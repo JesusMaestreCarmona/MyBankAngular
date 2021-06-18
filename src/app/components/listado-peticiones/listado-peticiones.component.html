@@ -25,7 +25,7 @@
                 </mat-button-toggle>
                 <mat-button-toggle class="color-primary" (click)="actualizarHistorial(0, 10)" matTooltip="Refrescar">
                   <mat-icon>refresh</mat-icon> 
-                  <span class="d-none d-md-inline">Refrescar</span>  
+                  <span class="d-none d-md-inline">Recargar</span>  
                 </mat-button-toggle>
               </mat-button-toggle-group>            
             </div>
@@ -84,7 +84,7 @@
           <div class="row">
             <div class="col-12 d-flex justify-content-center bg-secondary">
               <mat-paginator [length]="peticiones.totalPeticiones" [pageIndex]="0" [pageSize]="10" [hidePageSize]="true"
-                [pageSizeOptions]="[5, 10, 25, 100]" (page)="actualizarHistorial($event.pageIndex, $event.pageSize)" [showFirstLastButtons]="true">
+                [pageSizeOptions]="[5, 10, 25, 100]" (page)="actualizarHistorial($event.pageIndex, $event.pageSize, filtros)" [showFirstLastButtons]="true">
               </mat-paginator>
             </div>
           </div>

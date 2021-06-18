@@ -15,6 +15,7 @@ export class FiltroListadosComponent implements OnInit {
   @Output()
   filtrosSeleccionados = new EventEmitter<any[]>();
   filtros = [];
+  deshabilitarBotonReiniciar: boolean = true;
 
   constructor() { }
 
@@ -26,15 +27,18 @@ export class FiltroListadosComponent implements OnInit {
   }
 
   filtrar() {
-    if (this.filterForm.controls.importe.value != '') this.filtros.push({ name: 'importe', value: this.filterForm.controls.importe.value });
-    if (this.filterForm.controls.fecha.value != '') this.filtros.push({ name: 'fecha', value: this.filterForm.controls.fecha.value.toLocaleDateString() });
+    if (this.filterForm.controls.importe.value != '' && this.filterForm.controls.importe.value != null) this.filtros.push({ name: 'importe', value: '' + this.filterForm.controls.importe.value });
+    if (this.filterForm.controls.fecha.value != '') this.filtros.push({ name: 'fecha', value: '' + this.filterForm.controls.fecha.value.getTime() });
     this.filtrosSeleccionados.emit(this.filtros);
+    this.filtros = [];
+    this.deshabilitarBotonReiniciar = false;
   }
 
   reiniciarFiltros() {
     this.filterForm.reset({ 'importe': null, 'fecha': '' });
     this.filtros = [];
     this.filtrosSeleccionados.emit(this.filtros);
+    this.deshabilitarBotonReiniciar = true;
   }
 
   emitirOcultarFiltro() {

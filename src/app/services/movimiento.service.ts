@@ -20,8 +20,14 @@ export class MovimientoService {
     return this.http.put<string>('/movimiento/realizar', jsonObject);
   }
 
-  getMovimientosCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number) : Observable<string> {
-    return this.http.get<string>('/movimiento/getAllMovimientosPaginacion?idCuenta=' + idCuenta + '&pagina=' + pagina + '&elementosPorPagina=' + elementosPorPagina);
+  getMovimientosCuentaPaginacion(idCuenta: number, pagina: number, elementosPorPagina: number, filtros: any[] = []) : Observable<string> {
+    var jsonObject = {
+      'idCuenta': idCuenta,
+      'pagina': pagina,
+      'elementosPorPagina': elementosPorPagina,
+      'filtros': filtros
+    };
+    return this.http.post<string>('/movimiento/getAllMovimientosPaginacion', jsonObject);
   }
 
 }

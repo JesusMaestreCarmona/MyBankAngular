@@ -28,6 +28,7 @@ export class ListadoPeticionesComponent implements OnInit {
   dataSourceTabla: MatTableDataSource<Transferencia>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  filtros = [];
 
   constructor(
     private usuarioService: UsuarioService, 
@@ -94,18 +95,13 @@ export class ListadoPeticionesComponent implements OnInit {
 
   actualizarHistorial(pagina, elementosPorPagina, filtros = []) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
-    this.transferenciaService.getPeticionesCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
+    this.filtros = filtros;
+    this.transferenciaService.getPeticionesCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina, this.filtros).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
         this.peticiones.lista = data['peticiones'];
         this.peticiones.totalPeticiones = data['totalPeticiones'];
         if (this.peticiones.totalPeticiones != 0) {
-          filtros.forEach(filtro => {
-            if (filtro.name !== 'fecha')
-              this.peticiones.lista = this.peticiones.lista.filter(peticion => peticion[filtro.name] === filtro.value);
-            else
-              this.peticiones.lista = this.peticiones.lista.filter(peticion => new Date(peticion[filtro.name]).toLocaleDateString() === filtro.value);
-          });      
           this.dataSourceTabla = new MatTableDataSource<Transferencia>(this.peticiones.lista);
           this.dataSourceTabla.sort = this.sort;
         }

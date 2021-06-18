@@ -28,6 +28,7 @@ export class ListadoMovimientosComponent implements OnInit {
   dataSourceTabla: MatTableDataSource<Movimiento>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  filtros = [];
 
   constructor(
     private usuarioService: UsuarioService, 
@@ -94,18 +95,13 @@ export class ListadoMovimientosComponent implements OnInit {
 
   actualizarHistorial(pagina, elementosPorPagina, filtros = []) {
     this.comunicacionDeAlertasService.abrirDialogCargando();
-    this.movimientoService.getMovimientosCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina).subscribe(data => {
+    this.filtros = filtros;
+    this.movimientoService.getMovimientosCuentaPaginacion(this.cuentaActual.id, pagina, elementosPorPagina, this.filtros).subscribe(data => {
       this.comunicacionDeAlertasService.cerrarDialogo();
       if (data['result'] == 'ok') {
         this.movimientos.lista = data['movimientos'];
         this.movimientos.totalMovimientos = data['totalMovimientos'];
         if (this.movimientos.totalMovimientos != 0) {
-          filtros.forEach(filtro => {
-            if (filtro.name !== 'fecha')
-              this.movimientos.lista = this.movimientos.lista.filter(movimiento => movimiento[filtro.name] === filtro.value);
-            else
-              this.movimientos.lista = this.movimientos.lista.filter(movimiento => new Date(movimiento[filtro.name]).toLocaleDateString() === filtro.value);
-          });      
           this.dataSourceTabla = new MatTableDataSource<Movimiento>(this.movimientos.lista);
           this.dataSourceTabla.sort = this.sort;
         }

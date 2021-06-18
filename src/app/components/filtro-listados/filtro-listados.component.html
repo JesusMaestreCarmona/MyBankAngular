@@ -23,7 +23,7 @@
       </mat-form-field>
       <div class="mt-4 d-flex">
         <button mat-stroked-button [disabled]="filterForm.controls.importe.value == null && filterForm.controls.fecha.value == ''" (click)="filtrar()" color="primary" class="ml-auto mr-2">Filtrar</button>
-        <button mat-stroked-button [disabled]="filtros.length == 0" color="warn" (click)="reiniciarFiltros()">Reiniciar filtros</button>
+        <button mat-stroked-button [disabled]="deshabilitarBotonReiniciar" (click)="reiniciarFiltros()">Reiniciar filtros</button>
       </div>
     </form>
   </div>
